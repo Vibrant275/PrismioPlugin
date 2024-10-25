@@ -1,0 +1,86 @@
+<idea-plugin>
+
+    <!-- Unique id for this plugin. Must stay constant for the life of the plugin. -->
+    <id>com.vibrant.prismio</id>
+
+    <!-- Text to display as name on Settings | Plugin page -->
+    <name>Prismio</name>
+
+    <!-- Product and plugin compatibility requirements -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
+    <!-- Text to display as description on Settings | Plugin page -->
+    <description>
+        <![CDATA[
+    Provides language support for Prismio, a modern programming language designed for maximum performance.
+    ]]>
+    </description>
+    <change-notes>
+        <![CDATA[
+      <ul>
+        <li><b>2.0.0</b> Convert to Gradle-based plugin.</li>
+        <li><b>1.0.0</b> Release 2018.3 and earlier.</li>
+      </ul>
+    ]]>
+    </change-notes>
+
+    <vendor url="https://vibrant1.com">Vibrant</vendor>
+
+    <extensions defaultExtensionNs="com.intellij">
+
+        <fileType name="Prismio File" implementationClass="com.vibrant.prismio.PsFileType" fieldName="INSTANCE"
+                  language="Prismio" extensions="psmi"/>
+
+        <lang.parserDefinition language="Prismio" implementationClass="com.vibrant.prismio.SimpleParserDefinition"/>
+
+        <lang.syntaxHighlighterFactory language="Prismio"
+                                       implementationClass="com.vibrant.prismio.highlighter.PsSyntaxHighlighterFactory"/>
+
+        <iconProvider implementation="com.vibrant.prismio.providers.PsPropertyIconProvider"/>
+
+        <colorSettingsPage implementation="com.vibrant.prismio.settings.ColorSettingsPage"/>
+
+        <annotator language="JAVA" implementationClass="com.vibrant.prismio.annotations.SimpleAnnotator"/>
+
+        <codeInsight.lineMarkerProvider language="JAVA"
+                                        implementationClass="com.vibrant.prismio.SimpleLineMarkerProvider"/>
+
+        <completion.contributor language="Prismio"
+                                implementationClass="com.vibrant.prismio.SimpleCompletionContributor"/>
+
+        <psi.referenceContributor language="JAVA"
+                                  implementation="com.vibrant.prismio.SimpleReferenceContributor"/>
+
+        <lang.refactoringSupport language="Prismio"
+                                 implementationClass="com.vibrant.prismio.SimpleRefactoringSupportProvider"/>
+
+        <lang.findUsagesProvider language="Prismio"
+                                 implementationClass="com.vibrant.prismio.SimpleFindUsagesProvider"/>
+
+        <lang.foldingBuilder language="JAVA" implementationClass="com.vibrant.prismio.SimpleFoldingBuilder"/>
+
+        <gotoSymbolContributor implementation="com.vibrant.prismio.SimpleChooseByNameContributor"/>
+
+        <lang.psiStructureViewFactory language="Prismio"
+                                      implementationClass="com.vibrant.prismio.SimpleStructureViewFactory"/>
+
+        <navbar implementation="com.vibrant.prismio.SimpleStructureAwareNavbar"/>
+
+        <lang.formatter language="Prismio" implementationClass="com.vibrant.prismio.SimpleFormattingModelBuilder"/>
+
+        <codeStyleSettingsProvider implementation="com.vibrant.prismio.SimpleCodeStyleSettingsProvider"/>
+
+        <langCodeStyleSettingsProvider implementation="com.vibrant.prismio.SimpleLanguageCodeStyleSettingsProvider"/>
+
+        <lang.commenter language="Prismio" implementationClass="com.vibrant.prismio.Commenter"/>
+
+        <lang.documentationProvider language="Prismio"
+                                    implementationClass="com.vibrant.prismio.SimpleDocumentationProvider"/>
+
+        <spellchecker.support language="Prismio" implementationClass="com.vibrant.prismio.SimpleSpellcheckingStrategy"/>
+
+
+    </extensions>
+
+</idea-plugin>

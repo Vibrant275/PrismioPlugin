@@ -1,0 +1,31 @@
+
+{
+  parserClass="com.vibrant.prismio.parser.SimpleParser"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Prismio"
+  psiImplClassSuffix="Impl"
+  psiPackage="org.intellij.sdk.language.psi"
+  psiImplPackage="org.intellij.sdk.language.psi.impl"
+
+  elementTypeHolderClass="com.vibrant.prismio.psi.SimpleTypes"
+  elementTypeClass="com.vibrant.prismio.psi.SimpleElementType"
+  tokenTypeClass="com.vibrant.prismio.psi.SimpleTokenType"
+
+  psiImplUtilClass="com.vibrant.prismio.psi.impl.SimplePsiImplUtil"
+}
+
+simpleFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY {
+  pin=3
+  recoverWhile="recover_property"
+  mixin="com.vibrant.prismio.psi.impl.SimpleNamedElementImpl"
+  implements="com.vibrant.prismio.psi.SimpleNamedElement"
+  methods=[getKey getValue getName setName getNameIdentifier getPresentation]
+}
+
+private recover_property ::= !(KEY|SEPARATOR|COMMENT)
