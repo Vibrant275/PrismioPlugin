@@ -6,13 +6,13 @@ import com.intellij.codeInsight.completion.*;
 import com.intellij.codeInsight.lookup.LookupElementBuilder;
 import com.intellij.patterns.PlatformPatterns;
 import com.intellij.util.ProcessingContext;
-import com.vibrant.prismio.psi.SimpleTypes;
+import com.vibrant.prismio.psi.PrismioTypes;
 import org.jetbrains.annotations.NotNull;
 
 final class SimpleCompletionContributor extends CompletionContributor {
 
   SimpleCompletionContributor() {
-    extend(CompletionType.BASIC, PlatformPatterns.psiElement(SimpleTypes.VALUE),
+    extend(CompletionType.BASIC, PlatformPatterns.psiElement(PrismioTypes.VALUE),
         new CompletionProvider<>() {
           public void addCompletions(@NotNull CompletionParameters parameters,
                                      @NotNull ProcessingContext context,

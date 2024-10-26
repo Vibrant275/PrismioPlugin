@@ -12,8 +12,8 @@ import com.intellij.spellchecker.inspections.PlainTextSplitter;
 import com.intellij.spellchecker.tokenizer.SpellcheckingStrategy;
 import com.intellij.spellchecker.tokenizer.TokenConsumer;
 import com.intellij.spellchecker.tokenizer.Tokenizer;
-import com.vibrant.prismio.psi.SimpleProperty;
-import com.vibrant.prismio.psi.SimpleTypes;
+import com.vibrant.prismio.psi.PrismioProperty;
+import com.vibrant.prismio.psi.PrismioTypes;
 import org.jetbrains.annotations.NotNull;
 
 final class SimpleSpellcheckingStrategy extends SpellcheckingStrategy {
@@ -24,8 +24,8 @@ final class SimpleSpellcheckingStrategy extends SpellcheckingStrategy {
       return new SimpleCommentTokenizer();
     }
 
-    if (element instanceof SimpleProperty) {
-      return new SimplePropertyTokenizer();
+    if (element instanceof PrismioProperty) {
+      return new PrismioPropertyTokenizer();
     }
 
     return EMPTY_TOKENIZER;
@@ -51,11 +51,11 @@ final class SimpleSpellcheckingStrategy extends SpellcheckingStrategy {
 
   }
 
-  private static class SimplePropertyTokenizer extends Tokenizer<SimpleProperty> {
+  private static class PrismioPropertyTokenizer extends Tokenizer<PrismioProperty> {
 
-    public void tokenize(@NotNull SimpleProperty element, @NotNull TokenConsumer consumer) {
+    public void tokenize(@NotNull PrismioProperty element, @NotNull TokenConsumer consumer) {
       //Spell check the keys and values of properties with different splitters
-      final ASTNode key = element.getNode().findChildByType(SimpleTypes.KEY);
+      final ASTNode key = element.getNode().findChildByType(PrismioTypes.KEY);
       if (key != null && key.getTextLength() > 0) {
         final PsiElement keyPsi = key.getPsi();
         final String text = key.getText();
@@ -65,7 +65,7 @@ final class SimpleSpellcheckingStrategy extends SpellcheckingStrategy {
             TextRange.allOf(text), IdentifierSplitter.getInstance());
       }
 
-      final ASTNode value = element.getNode().findChildByType(SimpleTypes.VALUE);
+      final ASTNode value = element.getNode().findChildByType(PrismioTypes.VALUE);
       if (value != null && value.getTextLength() > 0) {
         final PsiElement valuePsi = value.getPsi();
         final String text = valuePsi.getText();

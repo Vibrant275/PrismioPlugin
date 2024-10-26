@@ -5,7 +5,7 @@ import com.intellij.lang.documentation.AbstractDocumentationProvider;
 import com.intellij.lang.documentation.DocumentationMarkup;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.presentation.java.SymbolPresentationUtil;
-import com.vibrant.prismio.psi.SimpleProperty;
+import com.vibrant.prismio.psi.PrismioProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -34,11 +34,11 @@ final class SimpleDocumentationProvider extends AbstractDocumentationProvider {
    */
   @Override
   public @Nullable String generateDoc(PsiElement element, @Nullable PsiElement originalElement) {
-    if (element instanceof SimpleProperty) {
-      final String key = ((SimpleProperty) element).getKey();
-      final String value = ((SimpleProperty) element).getValue();
+    if (element instanceof PrismioProperty) {
+      final String key = ((PrismioProperty) element).getKey();
+      final String value = ((PrismioProperty) element).getValue();
       final String file = SymbolPresentationUtil.getFilePathPresentation(element.getContainingFile());
-      final String docComment = SimpleUtil.findDocumentationComment((SimpleProperty) element);
+      final String docComment = SimpleUtil.findDocumentationComment((PrismioProperty) element);
 
       return renderFullDoc(key, value, file, docComment);
     }
@@ -50,8 +50,8 @@ final class SimpleDocumentationProvider extends AbstractDocumentationProvider {
    */
   @Override
   public @Nullable String getQuickNavigateInfo(PsiElement element, PsiElement originalElement) {
-    if (element instanceof SimpleProperty) {
-      final String key = ((SimpleProperty) element).getKey();
+    if (element instanceof PrismioProperty) {
+      final String key = ((PrismioProperty) element).getKey();
       final String file = SymbolPresentationUtil.getFilePathPresentation(element.getContainingFile());
       return "\"" + key + "\" in " + file;
     }

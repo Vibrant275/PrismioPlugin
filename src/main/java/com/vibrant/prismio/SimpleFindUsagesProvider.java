@@ -1,5 +1,3 @@
-// Copyright 2000-2024 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
-
 package com.vibrant.prismio;
 
 import com.intellij.lang.cacheBuilder.DefaultWordsScanner;
@@ -10,8 +8,8 @@ import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
 import com.vibrant.prismio.annotations.SimpleAnnotator;
 import com.vibrant.prismio.lexer.LexerAdapter;
-import com.vibrant.prismio.psi.SimpleProperty;
-import com.vibrant.prismio.psi.SimpleTokenSets;
+import com.vibrant.prismio.psi.PrismioProperty;
+import com.vibrant.prismio.psi.PrismioTokenSets;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -20,8 +18,8 @@ final class SimpleFindUsagesProvider implements FindUsagesProvider {
   @Override
   public WordsScanner getWordsScanner() {
     return new DefaultWordsScanner(new LexerAdapter(),
-        SimpleTokenSets.IDENTIFIERS,
-        SimpleTokenSets.COMMENTS,
+        PrismioTokenSets.IDENTIFIERS,
+        PrismioTokenSets.COMMENTS,
         TokenSet.EMPTY);
   }
 
@@ -39,7 +37,7 @@ final class SimpleFindUsagesProvider implements FindUsagesProvider {
   @NotNull
   @Override
   public String getType(@NotNull PsiElement element) {
-    if (element instanceof SimpleProperty) {
+    if (element instanceof PrismioProperty) {
       return "simple property";
     }
     return "";
@@ -48,8 +46,8 @@ final class SimpleFindUsagesProvider implements FindUsagesProvider {
   @NotNull
   @Override
   public String getDescriptiveName(@NotNull PsiElement element) {
-    if (element instanceof SimpleProperty) {
-      return ((SimpleProperty) element).getKey();
+    if (element instanceof PrismioProperty) {
+      return ((PrismioProperty) element).getKey();
     }
     return "";
   }
@@ -57,10 +55,10 @@ final class SimpleFindUsagesProvider implements FindUsagesProvider {
   @NotNull
   @Override
   public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
-    if (element instanceof SimpleProperty) {
-      return ((SimpleProperty) element).getKey() +
+    if (element instanceof PrismioProperty) {
+      return ((PrismioProperty) element).getKey() +
           SimpleAnnotator.PS_SEPARATOR_STR +
-          ((SimpleProperty) element).getValue();
+          ((PrismioProperty) element).getValue();
     }
     return "";
   }

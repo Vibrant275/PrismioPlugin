@@ -13,7 +13,7 @@ import com.intellij.psi.PsiLiteralExpression;
 import com.vibrant.prismio.SimpleCreatePropertyQuickFix;
 import com.vibrant.prismio.highlighter.PsSyntaxHighlighter;
 import com.vibrant.prismio.SimpleUtil;
-import com.vibrant.prismio.psi.SimpleProperty;
+import com.vibrant.prismio.psi.PrismioProperty;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -53,7 +53,7 @@ public final class SimpleAnnotator implements Annotator {
 
     // Get the list of properties for given key
     String key = value.substring(PS_PREFIX_STR.length() + PS_SEPARATOR_STR.length());
-    List<SimpleProperty> properties = SimpleUtil.findProperties(element.getProject(), key);
+    List<PrismioProperty> properties = SimpleUtil.findProperties(element.getProject(), key);
     if (properties.isEmpty()) {
       holder.newAnnotation(HighlightSeverity.ERROR, "Unresolved property")
           .range(keyRange)

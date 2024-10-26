@@ -9,9 +9,9 @@ import com.intellij.ide.util.treeView.smartTree.TreeElement;
 import com.intellij.navigation.ItemPresentation;
 import com.intellij.psi.NavigatablePsiElement;
 import com.intellij.psi.util.PsiTreeUtil;
-import com.vibrant.prismio.psi.SimpleFile;
-import com.vibrant.prismio.psi.SimpleProperty;
-import com.vibrant.prismio.psi.impl.SimplePropertyImpl;
+import com.vibrant.prismio.psi.PrismioFile;
+import com.vibrant.prismio.psi.PrismioProperty;
+import com.vibrant.prismio.psi.impl.PrismioPropertyImpl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -61,11 +61,11 @@ public class SimpleStructureViewElement implements StructureViewTreeElement, Sor
 
   @Override
   public TreeElement @NotNull [] getChildren() {
-    if (myElement instanceof SimpleFile) {
-      List<SimpleProperty> properties = PsiTreeUtil.getChildrenOfTypeAsList(myElement, SimpleProperty.class);
+    if (myElement instanceof PrismioFile) {
+      List<PrismioProperty> properties = PsiTreeUtil.getChildrenOfTypeAsList(myElement, PrismioProperty.class);
       List<TreeElement> treeElements = new ArrayList<>(properties.size());
-      for (SimpleProperty property : properties) {
-        treeElements.add(new SimpleStructureViewElement((SimplePropertyImpl) property));
+      for (PrismioProperty property : properties) {
+        treeElements.add(new SimpleStructureViewElement((PrismioPropertyImpl) property));
       }
       return treeElements.toArray(new TreeElement[0]);
     }

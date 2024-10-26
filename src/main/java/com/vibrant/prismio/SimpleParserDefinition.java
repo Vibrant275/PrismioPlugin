@@ -11,10 +11,10 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.tree.IFileElementType;
 import com.intellij.psi.tree.TokenSet;
 import com.vibrant.prismio.lexer.LexerAdapter;
-import com.vibrant.prismio.parser.SimpleParser;
-import com.vibrant.prismio.psi.SimpleFile;
-import com.vibrant.prismio.psi.SimpleTokenSets;
-import com.vibrant.prismio.psi.SimpleTypes;
+import com.vibrant.prismio.parser.PrismioParser;
+import com.vibrant.prismio.psi.PrismioTypes;
+import com.vibrant.prismio.psi.PrismioFile;
+import com.vibrant.prismio.psi.PrismioTokenSets;
 import org.jetbrains.annotations.NotNull;
 
 final class SimpleParserDefinition implements ParserDefinition {
@@ -30,8 +30,10 @@ final class SimpleParserDefinition implements ParserDefinition {
   @NotNull
   @Override
   public TokenSet getCommentTokens() {
-    return SimpleTokenSets.COMMENTS;
+    return PrismioTokenSets.COMMENTS;
   }
+
+
 
   @NotNull
   @Override
@@ -42,7 +44,7 @@ final class SimpleParserDefinition implements ParserDefinition {
   @NotNull
   @Override
   public PsiParser createParser(final Project project) {
-    return new SimpleParser();
+    return new PrismioParser();
   }
 
   @NotNull
@@ -54,13 +56,13 @@ final class SimpleParserDefinition implements ParserDefinition {
   @NotNull
   @Override
   public PsiFile createFile(@NotNull FileViewProvider viewProvider) {
-    return new SimpleFile(viewProvider);
+    return new PrismioFile(viewProvider);
   }
 
   @NotNull
   @Override
   public PsiElement createElement(ASTNode node) {
-    return SimpleTypes.Factory.createElement(node);
+    return PrismioTypes.Factory.createElement(node);
   }
 
 }

@@ -13,7 +13,6 @@ import com.intellij.psi.PsiReference;
 import com.intellij.psi.codeStyle.CodeStyleManager;
 import com.intellij.testFramework.fixtures.LightJavaCodeInsightFixtureTestCase;
 import com.intellij.usageView.UsageInfo;
-import com.vibrant.prismio.psi.SimpleProperty;
 
 import java.util.Collection;
 import java.util.List;
@@ -82,8 +81,8 @@ public class SimpleCodeInsightTest extends LightJavaCodeInsightFixtureTestCase {
   public void testReference() {
     PsiReference referenceAtCaret =
         myFixture.getReferenceAtCaretPositionWithAssertion("ReferenceTestData.java", "DefaultTestData.simple");
-    final SimpleProperty resolvedSimpleProperty = assertInstanceOf(referenceAtCaret.resolve(), SimpleProperty.class);
-    assertEquals("https://en.wikipedia.org/", resolvedSimpleProperty.getValue());
+    final PrismioProperty resolvedPrismioProperty = assertInstanceOf(referenceAtCaret.resolve(), PrismioProperty.class);
+    assertEquals("https://en.wikipedia.org/", resolvedPrismioProperty.getValue());
   }
 
   public void testDocumentation() {

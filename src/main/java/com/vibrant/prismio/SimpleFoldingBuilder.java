@@ -17,7 +17,7 @@ import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.util.PsiLiteralUtil;
 import com.intellij.util.containers.ContainerUtil;
 import com.vibrant.prismio.annotations.SimpleAnnotator;
-import com.vibrant.prismio.psi.SimpleProperty;
+import com.vibrant.prismio.psi.PrismioProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -49,8 +49,8 @@ final class SimpleFoldingBuilder extends FoldingBuilderEx implements DumbAware {
           String key = value.substring(
               SimpleAnnotator.PS_PREFIX_STR.length() + SimpleAnnotator.PS_SEPARATOR_STR.length()
           );
-          // find SimpleProperty for the given key in the project
-          SimpleProperty simpleProperty = ContainerUtil.getOnlyItem(SimpleUtil.findProperties(project, key));
+          // find PrismioProperty for the given key in the project
+          PrismioProperty simpleProperty = ContainerUtil.getOnlyItem(SimpleUtil.findProperties(project, key));
           if (simpleProperty != null) {
             // Add a folding descriptor for the literal expression at this node.
             descriptors.add(new FoldingDescriptor(literalExpression.getNode(),
@@ -84,7 +84,7 @@ final class SimpleFoldingBuilder extends FoldingBuilderEx implements DumbAware {
       String key = text.substring(SimpleAnnotator.PS_PREFIX_STR.length() +
           SimpleAnnotator.PS_SEPARATOR_STR.length());
 
-      SimpleProperty simpleProperty = ContainerUtil.getOnlyItem(
+      PrismioProperty simpleProperty = ContainerUtil.getOnlyItem(
           SimpleUtil.findProperties(psiLiteralExpression.getProject(), key)
       );
       if (simpleProperty == null) {

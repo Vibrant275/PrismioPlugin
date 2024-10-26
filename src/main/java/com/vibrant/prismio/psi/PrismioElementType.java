@@ -7,9 +7,9 @@ import com.vibrant.prismio.PrismioLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-public class SimpleElementType extends IElementType {
+public class PrismioElementType extends IElementType {
 
-  public SimpleElementType(@NotNull @NonNls String debugName) {
+  public PrismioElementType(@NotNull @NonNls String debugName) {
     super(debugName, PrismioLanguage.INSTANCE);
   }
 

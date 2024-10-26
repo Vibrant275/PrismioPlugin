@@ -9,9 +9,9 @@ import com.vibrant.prismio.PsFileType;
 import com.vibrant.prismio.PrismioLanguage;
 import org.jetbrains.annotations.NotNull;
 
-public class SimpleFile extends PsiFileBase {
+public class PrismioFile extends PsiFileBase {
 
-  public SimpleFile(@NotNull FileViewProvider viewProvider) {
+  public PrismioFile(@NotNull FileViewProvider viewProvider) {
     super(viewProvider, PrismioLanguage.INSTANCE);
   }
 
@@ -23,7 +23,7 @@ public class SimpleFile extends PsiFileBase {
 
   @Override
   public String toString() {
-    return "Simple File";
+    return "Prismio File";
   }
 
 }

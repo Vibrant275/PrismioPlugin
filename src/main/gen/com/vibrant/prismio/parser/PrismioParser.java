@@ -1,18 +1,18 @@
 // This is a generated file. Not intended for manual editing.
 package com.vibrant.prismio.parser;
 
-import com.intellij.lang.ASTNode;
-import com.intellij.lang.LightPsiParser;
 import com.intellij.lang.PsiBuilder;
 import com.intellij.lang.PsiBuilder.Marker;
-import com.intellij.lang.PsiParser;
-import com.intellij.psi.tree.IElementType;
-
+import static com.vibrant.prismio.psi.PrismioTypes.*;
 import static com.intellij.lang.parser.GeneratedParserUtilBase.*;
-import static com.vibrant.prismio.psi.SimpleTypes.*;
+import com.intellij.psi.tree.IElementType;
+import com.intellij.lang.ASTNode;
+import com.intellij.psi.tree.TokenSet;
+import com.intellij.lang.PsiParser;
+import com.intellij.lang.LightPsiParser;
 
 @SuppressWarnings({"SimplifiableIfStatement", "UnusedAssignment"})
-public class SimpleParser implements PsiParser, LightPsiParser {
+public class PrismioParser implements PsiParser, LightPsiParser {
 
   public ASTNode parse(IElementType t, PsiBuilder b) {
     parseLight(t, b);
@@ -36,7 +36,7 @@ public class SimpleParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // property|COMMENT|CRLF
+  // property | COMMENT | CRLF | IDENTIFIER | OPERATOR | STRING_LITERAL | CHARACTER_LITERAL | BOOLEAN | MULTILINE_COMMENT | SINGLE_LINE_COMMENT | KEYWORD
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
@@ -44,6 +44,14 @@ public class SimpleParser implements PsiParser, LightPsiParser {
     r = property(b, l + 1);
     if (!r) r = consumeToken(b, COMMENT);
     if (!r) r = consumeToken(b, CRLF);
+    if (!r) r = consumeToken(b, IDENTIFIER);
+    if (!r) r = consumeToken(b, OPERATOR);
+    if (!r) r = consumeToken(b, STRING_LITERAL);
+    if (!r) r = consumeToken(b, CHARACTER_LITERAL);
+    if (!r) r = consumeToken(b, BOOLEAN);
+    if (!r) r = consumeToken(b, MULTILINE_COMMENT);
+    if (!r) r = consumeToken(b, SINGLE_LINE_COMMENT);
+    if (!r) r = consumeToken(b, KEYWORD);
     exit_section_(b, m, null, r);
     return r;
   }
@@ -56,7 +64,7 @@ public class SimpleParser implements PsiParser, LightPsiParser {
     Marker m = enter_section_(b, l, _NONE_, PROPERTY, "<property>");
     r = property_0(b, l + 1);
     if (!r) r = consumeToken(b, KEY);
-    exit_section_(b, l, m, r, false, SimpleParser::recover_property);
+    exit_section_(b, l, m, r, false, PrismioParser::recover_property);
     return r;
   }
 

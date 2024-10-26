@@ -4,7 +4,7 @@ package com.vibrant.prismio;
 
 import com.intellij.lang.refactoring.RefactoringSupportProvider;
 import com.intellij.psi.PsiElement;
-import com.vibrant.prismio.psi.SimpleProperty;
+import com.vibrant.prismio.psi.PrismioProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -12,7 +12,7 @@ final class SimpleRefactoringSupportProvider extends RefactoringSupportProvider 
 
   @Override
   public boolean isMemberInplaceRenameAvailable(@NotNull PsiElement elementToRename, @Nullable PsiElement context) {
-    return (elementToRename instanceof SimpleProperty);
+    return (elementToRename instanceof PrismioProperty);
   }
 
 }

@@ -1,5 +1,3 @@
-// Copyright 2000-2023 JetBrains s.r.o. and other contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-
 package com.vibrant.prismio;
 
 import com.intellij.codeInsight.intention.impl.BaseIntentionAction;
@@ -20,9 +18,9 @@ import com.intellij.psi.PsiManager;
 import com.intellij.psi.search.FileTypeIndex;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.util.IncorrectOperationException;
-import com.vibrant.prismio.psi.SimpleElementFactory;
-import com.vibrant.prismio.psi.SimpleFile;
-import com.vibrant.prismio.psi.SimpleProperty;
+import com.vibrant.prismio.psi.PrismioElementFactory;
+import com.vibrant.prismio.psi.PrismioFile;
+import com.vibrant.prismio.psi.PrismioProperty;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Collection;
@@ -74,15 +72,15 @@ public class SimpleCreatePropertyQuickFix extends BaseIntentionAction {
 
   private void createProperty(final Project project, final VirtualFile file) {
     WriteCommandAction.writeCommandAction(project).run(() -> {
-      SimpleFile simpleFile = (SimpleFile) PsiManager.getInstance(project).findFile(file);
+      PrismioFile simpleFile = (PrismioFile) PsiManager.getInstance(project).findFile(file);
       assert simpleFile != null;
       ASTNode lastChildNode = simpleFile.getNode().getLastChildNode();
       // TODO: Add another check for CRLF
-      if (lastChildNode != null/* && !lastChildNode.getElementType().equals(SimpleTypes.CRLF)*/) {
-        simpleFile.getNode().addChild(SimpleElementFactory.createCRLF(project).getNode());
+      if (lastChildNode != null/* && !lastChildNode.getElementType().equals(PrismioTypes.CRLF)*/) {
+        simpleFile.getNode().addChild(PrismioElementFactory.createCRLF(project).getNode());
       }
       // IMPORTANT: change spaces to escaped spaces or the new node will only have the first word for the key
-      SimpleProperty property = SimpleElementFactory.createProperty(project, key.replaceAll(" ", "\\\\ "), "");
+      PrismioProperty property = PrismioElementFactory.createProperty(project, key.replaceAll(" ", "\\\\ "), "");
       simpleFile.getNode().addChild(property.getNode());
       ((Navigatable) property.getLastChild().getNavigationElement()).navigate(true);
       Editor editor = FileEditorManager.getInstance(project).getSelectedTextEditor();

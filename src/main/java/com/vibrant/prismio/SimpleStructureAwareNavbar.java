@@ -1,12 +1,10 @@
-// Copyright 2000-2023 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
-
 package com.vibrant.prismio;
 
 import com.intellij.icons.AllIcons;
 import com.intellij.ide.navigationToolbar.StructureAwareNavBarModelExtension;
 import com.intellij.lang.Language;
-import com.vibrant.prismio.psi.SimpleFile;
-import com.vibrant.prismio.psi.SimpleProperty;
+import com.vibrant.prismio.psi.PrismioFile;
+import com.vibrant.prismio.psi.PrismioProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -22,11 +20,11 @@ final class SimpleStructureAwareNavbar extends StructureAwareNavBarModelExtensio
 
   @Override
   public @Nullable String getPresentableText(Object object) {
-    if (object instanceof SimpleFile) {
-      return ((SimpleFile) object).getName();
+    if (object instanceof PrismioFile) {
+      return ((PrismioFile) object).getName();
     }
-    if (object instanceof SimpleProperty) {
-      return ((SimpleProperty) object).getName();
+    if (object instanceof PrismioProperty) {
+      return ((PrismioProperty) object).getName();
     }
 
     return null;
@@ -35,7 +33,7 @@ final class SimpleStructureAwareNavbar extends StructureAwareNavBarModelExtensio
   @Override
   @Nullable
   public Icon getIcon(Object object) {
-    if (object instanceof SimpleProperty) {
+    if (object instanceof PrismioProperty) {
       return AllIcons.Nodes.Property;
     }
 

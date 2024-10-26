@@ -5,15 +5,15 @@ import com.vibrant.prismio.PrismioLanguage;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 
-public class SimpleTokenType extends IElementType {
+public class PrismioTokenType extends IElementType {
 
-  public SimpleTokenType(@NotNull @NonNls String debugName) {
+  public PrismioTokenType(@NotNull @NonNls String debugName) {
     super(debugName, PrismioLanguage.INSTANCE);
   }
 
   @Override
   public String toString() {
-    return "SimpleTokenType." + super.toString();
+    return "PrismioTokenType." + super.toString();
   }
 
 }

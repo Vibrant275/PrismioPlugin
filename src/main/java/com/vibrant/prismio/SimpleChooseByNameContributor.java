@@ -1,5 +1,3 @@
-// Copyright 2000-2023 JetBrains s.r.o. and contributors. Use of this source code is governed by the Apache 2.0 license.
-
 package com.vibrant.prismio;
 
 import com.intellij.navigation.ChooseByNameContributorEx;
@@ -10,7 +8,7 @@ import com.intellij.util.Processor;
 import com.intellij.util.containers.ContainerUtil;
 import com.intellij.util.indexing.FindSymbolParameters;
 import com.intellij.util.indexing.IdFilter;
-import com.vibrant.prismio.psi.SimpleProperty;
+import com.vibrant.prismio.psi.PrismioProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -25,7 +23,7 @@ final class SimpleChooseByNameContributor implements ChooseByNameContributorEx {
                            @Nullable IdFilter filter) {
     Project project = Objects.requireNonNull(scope.getProject());
     List<String> propertyKeys = ContainerUtil.map(
-        SimpleUtil.findProperties(project), SimpleProperty::getKey);
+        SimpleUtil.findProperties(project), PrismioProperty::getKey);
     ContainerUtil.process(propertyKeys, processor);
   }
 

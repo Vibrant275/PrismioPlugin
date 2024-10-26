@@ -10,7 +10,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.impl.source.tree.java.PsiJavaTokenImpl;
 import com.vibrant.prismio.annotations.SimpleAnnotator;
-import com.vibrant.prismio.psi.SimpleProperty;
+import com.vibrant.prismio.psi.PrismioProperty;
 import com.vibrant.prismio.utils.Icons;
 import org.jetbrains.annotations.NotNull;
 
@@ -39,7 +39,7 @@ final class SimpleLineMarkerProvider extends RelatedItemLineMarkerProvider {
     String possibleProperties = value.substring(
         SimpleAnnotator.PS_PREFIX_STR.length() + SimpleAnnotator.PS_SEPARATOR_STR.length()
     );
-    final List<SimpleProperty> properties = SimpleUtil.findProperties(project, possibleProperties);
+    final List<PrismioProperty> properties = SimpleUtil.findProperties(project, possibleProperties);
     if (!properties.isEmpty()) {
       // Add the property to a collection of line marker info
       NavigationGutterIconBuilder<PsiElement> builder =

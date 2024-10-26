@@ -1,19 +1,17 @@
-// Copyright 2000-2023 JetBrains s.r.o. and other contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-
 package com.vibrant.prismio;
 
 import com.intellij.formatting.*;
 import com.intellij.psi.codeStyle.CodeStyleSettings;
-import com.vibrant.prismio.psi.SimpleTypes;
+import com.vibrant.prismio.psi.PrismioTypes;
 import org.jetbrains.annotations.NotNull;
 
 final class SimpleFormattingModelBuilder implements FormattingModelBuilder {
 
   private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
     return new SpacingBuilder(settings, PrismioLanguage.INSTANCE)
-        .around(SimpleTypes.SEPARATOR)
+        .around(PrismioTypes.SEPARATOR)
         .spaceIf(settings.getCommonSettings(PrismioLanguage.INSTANCE.getID()).SPACE_AROUND_ASSIGNMENT_OPERATORS)
-        .before(SimpleTypes.PROPERTY)
+        .before(PrismioTypes.PROPERTY)
         .none();
   }
 

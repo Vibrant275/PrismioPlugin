@@ -5,13 +5,13 @@ import org.jetbrains.annotations.*;
 import com.intellij.psi.PsiElementVisitor;
 import com.intellij.psi.PsiElement;
 
-public class SimpleVisitor extends PsiElementVisitor {
+public class PrismioVisitor extends PsiElementVisitor {
 
-  public void visitProperty(@NotNull SimpleProperty o) {
+  public void visitProperty(@NotNull PrismioProperty o) {
     visitNamedElement(o);
   }
 
-  public void visitNamedElement(@NotNull SimpleNamedElement o) {
+  public void visitNamedElement(@NotNull PrismioNamedElement o) {
     visitPsiElement(o);
   }
 
