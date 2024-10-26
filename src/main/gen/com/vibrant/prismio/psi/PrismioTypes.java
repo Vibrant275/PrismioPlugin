@@ -14,7 +14,9 @@ public interface PrismioTypes {
   IElementType CHARACTER_LITERAL = new PrismioTokenType("CHARACTER_LITERAL");
   IElementType COMMENT = new PrismioTokenType("COMMENT");
   IElementType CRLF = new PrismioTokenType("CRLF");
+  IElementType FLOAT = new PrismioTokenType("FLOAT");
   IElementType IDENTIFIER = new PrismioTokenType("IDENTIFIER");
+  IElementType INTEGER = new PrismioTokenType("INTEGER");
   IElementType KEY = new PrismioTokenType("KEY");
   IElementType KEYWORD = new PrismioTokenType("KEYWORD");
   IElementType MULTILINE_COMMENT = new PrismioTokenType("MULTILINE_COMMENT");

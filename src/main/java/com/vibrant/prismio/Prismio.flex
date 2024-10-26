@@ -24,12 +24,13 @@ WHITE_SPACE=[\ \n\t\f]
 FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
 VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
 
+SINGLE_LINE_COMMENT=("//")[^\r\n]*
+MULTILINE_COMMENT="/*" [^*] ~"*/" | "/*" "*"+ "/"*
+
 SEPARATOR=[:=]
 KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
 
 /* Updated Patterns */
-SINGLE_LINE_COMMENT=("//")[^\r\n]*
-MULTILINE_COMMENT="/*" [^*] ~"*/" | "/*" "*"+ "/"*
 
 STRING_LITERAL="\"([^\"\\]|\\.)*\""
 CHARACTER_LITERAL="'([^'\\]|\\.)'"
@@ -42,6 +43,10 @@ KEYWORD=(
 BOOLEAN=("true"|"false")
 IDENTIFIER=([a-zA-Z_][a-zA-Z0-9_]*)
 OPERATOR=("="|"<"|">"|"<="|">="|"=="|"!="|"+"|"-"|"*"|"/"|"%"|"!"|"&"|"|"|"^"|"~")
+FLOAT=(-?[0-9]*\.[0-9]+)
+INTEGER=(-?[0-9]+)
+
+
 
 // States
 %state WAITING_VALUE
@@ -59,6 +64,8 @@ OPERATOR=("="|"<"|">"|"<="|">="|"=="|"!="|"+"|"-"|"*"|"/"|"%"|"!"|"&"|"|"|"^"|"~
 <YYINITIAL> {CHARACTER_LITERAL} { yybegin(YYINITIAL); return PrismioTypes.CHARACTER_LITERAL; }
 <YYINITIAL> {SEPARATOR} { yybegin(WAITING_VALUE); return PrismioTypes.SEPARATOR; }
 <YYINITIAL> {CRLF} { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+<YYINITIAL> {INTEGER} { yybegin(YYINITIAL); return PrismioTypes.INTEGER; }
+<YYINITIAL> {FLOAT} { yybegin(YYINITIAL); return PrismioTypes.FLOAT; }
 
 
 

@@ -17,8 +17,10 @@ public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
 
   public static final TextAttributesKey SEPARATOR =
       createTextAttributesKey("PS_SEPARATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
-  public static final TextAttributesKey KEY =
-      createTextAttributesKey("PS_KEY", DefaultLanguageHighlighterColors.KEYWORD);
+
+  public static final TextAttributesKey KEYWORD =
+      createTextAttributesKey("PS_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
+
   public static final TextAttributesKey VALUE =
       createTextAttributesKey("PS_VALUE", DefaultLanguageHighlighterColors.STRING);
   public static final TextAttributesKey LINE_COMMENT =
@@ -28,12 +30,16 @@ public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
   public static final TextAttributesKey BAD_CHARACTER =
       createTextAttributesKey("PS_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
+  public static final TextAttributesKey NUMBER =
+      createTextAttributesKey("PS_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
+
 
   private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
   private static final TextAttributesKey[] SEPARATOR_KEYS = new TextAttributesKey[]{SEPARATOR};
-  private static final TextAttributesKey[] KEY_KEYS = new TextAttributesKey[]{KEY};
+  private static final TextAttributesKey[] KEYWORDS_KEYS = new TextAttributesKey[]{KEYWORD};
   private static final TextAttributesKey[] VALUE_KEYS = new TextAttributesKey[]{VALUE};
   private static final TextAttributesKey[] LINE_COMMENT_KEYS = new TextAttributesKey[]{LINE_COMMENT};
+  private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
 
   private static final TextAttributesKey[] BLOCK_COMMENT_KEYS = new TextAttributesKey[]{BLOCK_COMMENT};
   private static final TextAttributesKey[] EMPTY_KEYS = new TextAttributesKey[0];
@@ -49,8 +55,8 @@ public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
     if (tokenType.equals(PrismioTypes.SEPARATOR)) {
       return SEPARATOR_KEYS;
     }
-    if (tokenType.equals(PrismioTypes.KEY)) {
-      return KEY_KEYS;
+    if (tokenType.equals(PrismioTypes.KEYWORD)) {
+      return KEYWORDS_KEYS;
     }
     if (tokenType.equals(PrismioTypes.VALUE)) {
       return VALUE_KEYS;
@@ -63,6 +69,9 @@ public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
     }
     if (tokenType.equals(TokenType.BAD_CHARACTER)) {
       return BAD_CHAR_KEYS;
+    }
+    if (tokenType.equals(PrismioTypes.INTEGER) || tokenType.equals(PrismioTypes.FLOAT)) {
+      return NUMBER_KEYS;
     }
     return EMPTY_KEYS;
   }

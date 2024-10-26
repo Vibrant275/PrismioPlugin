@@ -15,7 +15,7 @@ import java.util.Map;
 final class ColorSettingsPage implements com.intellij.openapi.options.colors.ColorSettingsPage {
 
   private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-      new AttributesDescriptor("Key", PsSyntaxHighlighter.KEYWORD),
+      new AttributesDescriptor("Key", PsSyntaxHighlighter.KEY),
       new AttributesDescriptor("Separator", PsSyntaxHighlighter.SEPARATOR),
       new AttributesDescriptor("Value", PsSyntaxHighlighter.VALUE),
       new AttributesDescriptor("Bad value", PsSyntaxHighlighter.BAD_CHARACTER)

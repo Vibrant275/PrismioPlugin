@@ -24,12 +24,12 @@ COMMENT | CRLF | IDENTIFIER | OPERATOR | STRING_LITERAL
 | INTEGER | FLOAT
  )
 
-property ::= (KEY? SEPARATOR VALUE?) | KEY {
-  pin=3
-  recoverWhile="recover_property"
-  mixin="com.vibrant.prismio.psi.impl.PrismioNamedElementImpl"
-  implements="com.vibrant.prismio.psi.PrismioNamedElement"
-  methods=[getKey getValue getName setName getNameIdentifier getPresentation]
-}
+//property ::= (KEY? SEPARATOR VALUE?) | KEY {
+//  pin=3
+//  recoverWhile="recover_property"
+//  mixin="com.vibrant.prismio.psi.impl.PrismioNamedElementImpl"
+//  implements="com.vibrant.prismio.psi.PrismioNamedElement"
+//  methods=[getKey getValue getName setName getNameIdentifier getPresentation]
+//}
 
 private recover_property ::= !(KEY|SEPARATOR|COMMENT)

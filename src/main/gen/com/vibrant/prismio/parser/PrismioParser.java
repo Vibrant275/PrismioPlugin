@@ -36,7 +36,10 @@ public class PrismioParser implements PsiParser, LightPsiParser {
   }
 
   /* ********************************************************** */
-  // property | COMMENT | CRLF | IDENTIFIER | OPERATOR | STRING_LITERAL | CHARACTER_LITERAL | BOOLEAN | MULTILINE_COMMENT | SINGLE_LINE_COMMENT | KEYWORD
+  // property |
+  // COMMENT | CRLF | IDENTIFIER | OPERATOR | STRING_LITERAL
+  // | CHARACTER_LITERAL | BOOLEAN | MULTILINE_COMMENT | SINGLE_LINE_COMMENT | KEYWORD
+  // | INTEGER | FLOAT
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
@@ -52,6 +55,8 @@ public class PrismioParser implements PsiParser, LightPsiParser {
     if (!r) r = consumeToken(b, MULTILINE_COMMENT);
     if (!r) r = consumeToken(b, SINGLE_LINE_COMMENT);
     if (!r) r = consumeToken(b, KEYWORD);
+    if (!r) r = consumeToken(b, INTEGER);
+    if (!r) r = consumeToken(b, FLOAT);
     exit_section_(b, m, null, r);
     return r;
   }
