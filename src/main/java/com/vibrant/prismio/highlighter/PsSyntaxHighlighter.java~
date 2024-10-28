@@ -21,8 +21,8 @@ public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
   public static final TextAttributesKey KEYWORD =
       createTextAttributesKey("PS_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
 
-  public static final TextAttributesKey TEXT_CHAR =
-      createTextAttributesKey("PS_TEXT_CHAR", DefaultLanguageHighlighterColors.STRING);
+  public static final TextAttributesKey VALUE =
+      createTextAttributesKey("PS_VALUE", DefaultLanguageHighlighterColors.STRING);
   public static final TextAttributesKey LINE_COMMENT =
       createTextAttributesKey("PS_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
   public static final TextAttributesKey BLOCK_COMMENT =
@@ -37,7 +37,7 @@ public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
   private static final TextAttributesKey[] BAD_CHAR_KEYS = new TextAttributesKey[]{BAD_CHARACTER};
   private static final TextAttributesKey[] SEPARATOR_KEYS = new TextAttributesKey[]{SEPARATOR};
   private static final TextAttributesKey[] KEYWORDS_KEYS = new TextAttributesKey[]{KEYWORD};
-  private static final TextAttributesKey[] TEXT_CHAR_KEYS = new TextAttributesKey[]{TEXT_CHAR};
+  private static final TextAttributesKey[] VALUE_KEYS = new TextAttributesKey[]{VALUE};
   private static final TextAttributesKey[] LINE_COMMENT_KEYS = new TextAttributesKey[]{LINE_COMMENT};
   private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
 
@@ -58,8 +58,8 @@ public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
     if (tokenType.equals(PrismioTypes.KEYWORD)) {
       return KEYWORDS_KEYS;
     }
-    if (tokenType.equals(PrismioTypes.STRING_LITERAL) || tokenType.equals(PrismioTypes.CHARACTER_LITERAL)) {
-      return TEXT_CHAR_KEYS;
+    if (tokenType.equals(PrismioTypes.VALUE)) {
+      return VALUE_KEYS;
     }
     if (tokenType.equals(PrismioTypes.SINGLE_LINE_COMMENT)) {
       return LINE_COMMENT_KEYS;

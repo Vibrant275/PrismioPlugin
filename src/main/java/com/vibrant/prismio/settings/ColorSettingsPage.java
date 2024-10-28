@@ -17,7 +17,7 @@ final class ColorSettingsPage implements com.intellij.openapi.options.colors.Col
   private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
       new AttributesDescriptor("Key", PsSyntaxHighlighter.KEYWORD),
       new AttributesDescriptor("Separator", PsSyntaxHighlighter.SEPARATOR),
-      new AttributesDescriptor("Value", PsSyntaxHighlighter.VALUE),
+      new AttributesDescriptor("Value", PsSyntaxHighlighter.TEXT_CHAR),
       new AttributesDescriptor("Bad value", PsSyntaxHighlighter.BAD_CHARACTER)
   };
 
