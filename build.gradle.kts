@@ -1,16 +1,16 @@
 plugins {
   id("java")
-  id("org.jetbrains.intellij") version "1.17.4"
+  id("org.jetbrains.intellij.platform") version "2.1.0"
 }
-
-group = "com.vibrant.prismio"
-version = "0.0.2"
 
 repositories {
   mavenCentral()
+
+  intellijPlatform {
+    defaultRepositories()
+  }
 }
 
-// Include the generated files in the source set
 sourceSets {
   main {
     java {
@@ -20,6 +20,15 @@ sourceSets {
 }
 
 dependencies {
+  intellijPlatform {
+    intellijIdeaCommunity("2024.2.4")
+
+    bundledPlugin("com.intellij.java")
+
+    pluginVerifier()
+    zipSigner()
+    instrumentationTools()
+  }
   testImplementation("junit:junit:4.13.2")
 }
 
@@ -28,19 +37,20 @@ java {
 }
 
 // See https://plugins.jetbrains.com/docs/intellij/tools-gradle-intellij-plugin.html
-intellij {
-  version.set("2023.3.7")
-  plugins.set(listOf("com.intellij.java"))
-}
+intellijPlatform {
+  group = "com.vibrant.prismio"
+  buildSearchableOptions = true
+  projectName = project.name
 
-tasks {
-  buildSearchableOptions {
-    enabled = false
-  }
-
-  patchPluginXml {
-    version.set("${project.version}")
-    sinceBuild.set("233")
-    untilBuild.set("242.*")
+  pluginConfiguration {
+    version = "0.0.3"
   }
 }
+
+//tasks {
+//  patchPluginXml {
+//    version.set("${project.version}")
+//    sinceBuild.set("233")
+//    untilBuild.set("242.*")
+//  }
+//}
