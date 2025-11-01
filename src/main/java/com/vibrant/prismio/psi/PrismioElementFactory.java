@@ -15,7 +15,7 @@ public class PrismioElementFactory {
   }
 
   public static PrismioFile createFile(Project project, String text) {
-    String name = "dummy.simple";
+    String name = "dummy.psm";
     return (PrismioFile) PsiFileFactory.getInstance(project).createFileFromText(name, PsFileType.INSTANCE, text);
   }
 

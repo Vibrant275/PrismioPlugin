@@ -9,12 +9,13 @@ obj/
 # IDE directories
 .vs/
 .idea/
+.gradle/
+.intellijPlatform/
+
 *.suo
 *.user
 *.userosscache
 *.sln.docstates
-.gradle/
-.intellijPlatform/
 # System files
 .DS_Store
 Thumbs.db

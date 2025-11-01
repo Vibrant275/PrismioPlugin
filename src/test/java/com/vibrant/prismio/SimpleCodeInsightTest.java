@@ -28,7 +28,7 @@ public class SimpleCodeInsightTest extends LightJavaCodeInsightFixtureTestCase {
   }
 
   public void testCompletion() {
-    myFixture.configureByFiles("CompleteTestData.java", "DefaultTestData.simple");
+    myFixture.configureByFiles("CompleteTestData.java", "DefaultTestData.psm");
     myFixture.complete(CompletionType.BASIC);
     List<String> lookupElementStrings = myFixture.getLookupElementStrings();
     assertNotNull(lookupElementStrings);
@@ -36,12 +36,12 @@ public class SimpleCodeInsightTest extends LightJavaCodeInsightFixtureTestCase {
   }
 
   public void testAnnotator() {
-    myFixture.configureByFiles("AnnotatorTestData.java", "DefaultTestData.simple");
+    myFixture.configureByFiles("AnnotatorTestData.java", "DefaultTestData.psm");
     myFixture.checkHighlighting(false, false, true, true);
   }
 
   public void testFormatter() {
-    myFixture.configureByFile("FormatterTestData.simple");
+    myFixture.configureByFile("FormatterTestData.psm");
     CodeStyle.getLanguageSettings(myFixture.getFile()).SPACE_AROUND_ASSIGNMENT_OPERATORS = true;
     CodeStyle.getLanguageSettings(myFixture.getFile()).KEEP_BLANK_LINES_IN_CODE = 2;
     WriteCommandAction.writeCommandAction(getProject()).run(() ->
@@ -50,22 +50,22 @@ public class SimpleCodeInsightTest extends LightJavaCodeInsightFixtureTestCase {
             List.of(myFixture.getFile().getTextRange())
         )
     );
-    myFixture.checkResultByFile("DefaultTestData.simple");
+    myFixture.checkResultByFile("DefaultTestData.psm");
   }
 
   public void testRename() {
-    myFixture.configureByFiles("RenameTestData.java", "RenameTestData.simple");
+    myFixture.configureByFiles("RenameTestData.java", "RenameTestData.psm");
     myFixture.renameElementAtCaret("websiteUrl");
-    myFixture.checkResultByFile("RenameTestData.simple", "RenameTestDataAfter.simple", false);
+    myFixture.checkResultByFile("RenameTestData.psm", "RenameTestDataAfter.psm", false);
   }
 
   public void testFolding() {
-    myFixture.configureByFile("DefaultTestData.simple");
+    myFixture.configureByFile("DefaultTestData.psm");
     myFixture.testFolding(getTestDataPath() + "/FoldingTestData.java");
   }
 
   public void testFindUsages() {
-    Collection<UsageInfo> usageInfos = myFixture.testFindUsages("FindUsagesTestData.simple", "FindUsagesTestData.java");
+    Collection<UsageInfo> usageInfos = myFixture.testFindUsages("FindUsagesTestData.psm", "FindUsagesTestData.java");
     assertEquals(1, usageInfos.size());
   }
 
@@ -80,13 +80,13 @@ public class SimpleCodeInsightTest extends LightJavaCodeInsightFixtureTestCase {
 
   public void testReference() {
     PsiReference referenceAtCaret =
-        myFixture.getReferenceAtCaretPositionWithAssertion("ReferenceTestData.java", "DefaultTestData.simple");
+        myFixture.getReferenceAtCaretPositionWithAssertion("ReferenceTestData.java", "DefaultTestData.psm");
     final PrismioProperty resolvedPrismioProperty = assertInstanceOf(referenceAtCaret.resolve(), PrismioProperty.class);
     assertEquals("https://en.wikipedia.org/", resolvedPrismioProperty.getValue());
   }
 
   public void testDocumentation() {
-    myFixture.configureByFiles("DocumentationTestData.java", "DocumentationTestData.simple");
+    myFixture.configureByFiles("DocumentationTestData.java", "DocumentationTestData.psm");
     final PsiElement originalElement = myFixture.getElementAtCaret();
     PsiElement element = DocumentationManager
         .getInstance(getProject())

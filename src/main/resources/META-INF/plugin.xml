@@ -30,7 +30,7 @@
     <extensions defaultExtensionNs="com.intellij">
 
         <fileType name="Prismio File" implementationClass="com.vibrant.prismio.PsFileType" fieldName="INSTANCE"
-                  language="Prismio" extensions="psmi"/>
+                  language="Prismio" extensions="psm"/>
 
         <lang.parserDefinition language="Prismio" implementationClass="com.vibrant.prismio.SimpleParserDefinition"/>
 
@@ -80,7 +80,22 @@
 
         <spellchecker.support language="Prismio" implementationClass="com.vibrant.prismio.SimpleSpellcheckingStrategy"/>
 
+        <!--        <actions>-->
+        <!--            <action id="Create.MyClass" class="com.example.CreateMyClassAction" icon="MyIcons.CLASS_ICON">-->
+        <!--                <add-to-group group-id="NewGroup"/>-->
+        <!--            </action>-->
+        <!--        </actions>-->
 
+        <internalFileTemplate name="Prismio File"/>
+        <fileTemplateGroup implementation="com.vibrant.prismio.template.PrismioTemplateGroupDescriptor"/>
     </extensions>
+
+
+    <actions>
+        <action id="com.vibrant.prismio.template.CreateClassAction"
+                class="com.vibrant.prismio.template.CreateClassAction" text="Prismio" icon="/icons/prismio.png">
+            <add-to-group group-id="NewGroup1"/>
+        </action>
+    </actions>
 
 </idea-plugin>

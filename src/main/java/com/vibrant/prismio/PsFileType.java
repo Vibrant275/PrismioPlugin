@@ -31,7 +31,7 @@ public final class PsFileType extends LanguageFileType {
   @NotNull
   @Override
   public String getDefaultExtension() {
-    return "psmi";
+    return "psm";
   }
 
   @Override

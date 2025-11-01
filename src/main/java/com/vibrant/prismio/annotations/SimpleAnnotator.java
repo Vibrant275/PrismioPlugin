@@ -21,7 +21,7 @@ import java.util.List;
 public final class SimpleAnnotator implements Annotator {
 
   // Define strings for the Simple language prefix - used for annotations, line markers, etc.
-  public static final String PS_PREFIX_STR = "psmi";
+  public static final String PS_PREFIX_STR = "psm";
   public static final String PS_SEPARATOR_STR = ":";
 
   @Override
@@ -44,7 +44,7 @@ public final class SimpleAnnotator implements Annotator {
     TextRange separatorRange = TextRange.from(prefixRange.getEndOffset(), PS_SEPARATOR_STR.length());
     TextRange keyRange = new TextRange(separatorRange.getEndOffset(), element.getTextRange().getEndOffset() - 1);
 
-    // highlight "psmi" prefix and ":" separator
+    // highlight "psm" prefix and ":" separator
     holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
         .range(prefixRange).textAttributes(DefaultLanguageHighlighterColors.KEYWORD).create();
     holder.newSilentAnnotation(HighlightSeverity.INFORMATION)
