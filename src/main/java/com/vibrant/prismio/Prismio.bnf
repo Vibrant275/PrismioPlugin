@@ -15,6 +15,15 @@
 // Root rule - a Prismio file is just a sequence of items
 prismioFile ::= item_*
 
+LBRACE ::= "{"
+RBRACE ::= "}"
+
+block ::= LBRACE statement* RBRACE
+
+function_decl ::= FN IDENTIFIER parameter_list block
+
+
+
 // An item can be any top-level declaration or comment
 private item_ ::= (
   KEYWORD

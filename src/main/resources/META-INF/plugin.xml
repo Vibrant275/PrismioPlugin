@@ -65,11 +65,13 @@
 
         <navbar implementation="com.vibrant.prismio.SimpleStructureAwareNavbar"/>
 
-        <lang.formatter language="Prismio" implementationClass="com.vibrant.prismio.SimpleFormattingModelBuilder"/>
+        <typedHandler implementation="com.vibrant.prismio.handler.PrismioTypedHandler"/>
+
+        <lang.formatter language="Prismio" implementationClass="com.vibrant.prismio.PrismioFormattingModelBuilder"/>
 
         <codeStyleSettingsProvider implementation="com.vibrant.prismio.SimpleCodeStyleSettingsProvider"/>
 
-        <langCodeStyleSettingsProvider implementation="com.vibrant.prismio.SimpleLanguageCodeStyleSettingsProvider"/>
+        <langCodeStyleSettingsProvider implementation="com.vibrant.prismio.LanguageCodeStyleSettingsProvider"/>
 
         <lang.commenter language="Prismio" implementationClass="com.vibrant.prismio.Commenter"/>
 
@@ -80,6 +82,12 @@
 
         <internalFileTemplate name="Prismio File"/>
         <fileTemplateGroup implementation="com.vibrant.prismio.template.PrismioTemplateGroupDescriptor"/>
+
+        <lang.foldingBuilder language="Prismio"
+                             implementationClass="com.vibrant.prismio.SimpleFoldingBuilder"/>
+
+        <codeInsight.lineMarkerProvider language="Prismio"
+                                        implementationClass="com.vibrant.prismio.SimpleLineMarkerProvider"/>
     </extensions>
 
 

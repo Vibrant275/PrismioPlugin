@@ -41,7 +41,7 @@ IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 
 // Operators and separators
 OPERATOR="<="|">="|"=="|"!="|"+="|"-="|"*="|"/="|"%="|"++"|"--"|"->"|"=>"|"&&"|"||"|[+\-*/%<>=!&|]
-SEPARATOR=[(){}[\],:;.]]
+SEPARATOR=[()[\],:;.]]
 
 %%
 
@@ -65,6 +65,8 @@ SEPARATOR=[(){}[\],:;.]]
 
   {WHITE_SPACE}             { return TokenType.WHITE_SPACE; }
   {CRLF}                    { return TokenType.WHITE_SPACE; }
+      "{" { return PrismioTypes.LBRACE; }
+      "}" { return PrismioTypes.RBRACE; }
 }
 
 [^]                         { return TokenType.BAD_CHARACTER; }

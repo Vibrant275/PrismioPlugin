@@ -7,37 +7,32 @@ import com.intellij.lang.ASTNode;
 
 public interface PrismioTypes {
 
-  // Token types for Prismio language
-  IElementType KEYWORD = new PrismioTokenType("KEYWORD");
-  IElementType TYPE_KEYWORD = new PrismioTokenType("TYPE_KEYWORD");
-  IElementType IDENTIFIER = new PrismioTokenType("IDENTIFIER");
-  IElementType OPERATOR = new PrismioTokenType("OPERATOR");
-  IElementType SEPARATOR = new PrismioTokenType("SEPARATOR");
+  IElementType BLOCK = new PrismioElementType("BLOCK");
+  IElementType FUNCTION_DECL = new PrismioElementType("FUNCTION_DECL");
+  IElementType LBRACE = new PrismioElementType("LBRACE");
+  IElementType RBRACE = new PrismioElementType("RBRACE");
 
-  IElementType STRING_LITERAL = new PrismioTokenType("STRING_LITERAL");
-  IElementType CHARACTER_LITERAL = new PrismioTokenType("CHARACTER_LITERAL");
-  IElementType INTEGER = new PrismioTokenType("INTEGER");
-  IElementType FLOAT = new PrismioTokenType("FLOAT");
   IElementType BOOLEAN = new PrismioTokenType("BOOLEAN");
-
-  IElementType SINGLE_LINE_COMMENT = new PrismioTokenType("SINGLE_LINE_COMMENT");
+  IElementType CHARACTER_LITERAL = new PrismioTokenType("CHARACTER_LITERAL");
+  IElementType FLOAT = new PrismioTokenType("FLOAT");
+  IElementType FN = new PrismioTokenType("FN");
+  IElementType IDENTIFIER = new PrismioTokenType("IDENTIFIER");
+  IElementType INTEGER = new PrismioTokenType("INTEGER");
+  IElementType KEYWORD = new PrismioTokenType("KEYWORD");
   IElementType MULTILINE_COMMENT = new PrismioTokenType("MULTILINE_COMMENT");
-
-  // Element types
-  IElementType PROPERTY = new PrismioElementType("PROPERTY");
-
-  // Legacy types (for compatibility)
-  IElementType COMMENT = new PrismioTokenType("COMMENT");
-  IElementType CRLF = new PrismioTokenType("CRLF");
+  IElementType OPERATOR = new PrismioTokenType("OPERATOR");
+  IElementType PARAMETER_LIST = new PrismioTokenType("parameter_list");
+  IElementType SEPARATOR = new PrismioTokenType("SEPARATOR");
+  IElementType SINGLE_LINE_COMMENT = new PrismioTokenType("SINGLE_LINE_COMMENT");
+  IElementType STATEMENT = new PrismioTokenType("statement");
+  IElementType STRING_LITERAL = new PrismioTokenType("STRING_LITERAL");
+  IElementType TYPE_KEYWORD = new PrismioTokenType("TYPE_KEYWORD");
   IElementType KEY = new PrismioTokenType("KEY");
-  IElementType VALUE = new PrismioTokenType("VALUE");
+  IElementType VALUE = new PrismioTokenType("KEY");
 
   class Factory {
     public static PsiElement createElement(ASTNode node) {
       IElementType type = node.getElementType();
-      if (type == PROPERTY) {
-        return new com.vibrant.prismio.psi.impl.PrismioPropertyImpl(node);
-      }
       throw new AssertionError("Unknown element type: " + type);
     }
   }

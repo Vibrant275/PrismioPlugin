@@ -26,7 +26,7 @@ public class PrismioPsiImplUtil {
   }
 
   public static String getValue(PrismioProperty element) {
-    ASTNode valueNode = element.getNode().findChildByType(PrismioTypes.VALUE);
+    ASTNode valueNode = element.getNode().findChildByType(PrismioTypes.STATEMENT);
     if (valueNode != null) {
       return valueNode.getText();
     } else {

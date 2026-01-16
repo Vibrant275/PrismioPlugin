@@ -12,7 +12,7 @@ import org.jetbrains.annotations.NotNull;
 final class SimpleCompletionContributor extends CompletionContributor {
 
   SimpleCompletionContributor() {
-    extend(CompletionType.BASIC, PlatformPatterns.psiElement(PrismioTypes.VALUE),
+    extend(CompletionType.BASIC, PlatformPatterns.psiElement(PrismioTypes.STATEMENT),
         new CompletionProvider<>() {
           public void addCompletions(@NotNull CompletionParameters parameters,
                                      @NotNull ProcessingContext context,
