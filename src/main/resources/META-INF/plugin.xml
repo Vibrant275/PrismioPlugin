@@ -8,17 +8,22 @@
 
     <!-- Product and plugin compatibility requirements -->
     <depends>com.intellij.modules.platform</depends>
-    <depends>com.intellij.java</depends>
 
     <!-- Text to display as description on Settings | Plugin page -->
     <description>
         <![CDATA[
     Provides language support for Prismio, a modern programming language designed for maximum performance.
+    Features include:
+    - Syntax highlighting
+    - Code completion
+    - Error detection
+    - Code formatting
     ]]>
     </description>
     <change-notes>
         <![CDATA[
       <ul>
+        <li><b>0.0.3</b>Complete syntax highlighting for .psm files</li>
         <li><b>0.0.2</b>Logo Update and Fixes</li>
         <li><b>0.0.1</b>Initial test release.</li>
       </ul>
@@ -41,24 +46,17 @@
 
         <colorSettingsPage implementation="com.vibrant.prismio.settings.ColorSettingsPage"/>
 
-        <annotator language="JAVA" implementationClass="com.vibrant.prismio.annotations.SimpleAnnotator"/>
-
-        <codeInsight.lineMarkerProvider language="JAVA"
-                                        implementationClass="com.vibrant.prismio.SimpleLineMarkerProvider"/>
+        <!-- Annotator for Prismio files only -->
+        <annotator language="Prismio" implementationClass="com.vibrant.prismio.annotations.SimpleAnnotator"/>
 
         <completion.contributor language="Prismio"
                                 implementationClass="com.vibrant.prismio.SimpleCompletionContributor"/>
-
-        <psi.referenceContributor language="JAVA"
-                                  implementation="com.vibrant.prismio.SimpleReferenceContributor"/>
 
         <lang.refactoringSupport language="Prismio"
                                  implementationClass="com.vibrant.prismio.SimpleRefactoringSupportProvider"/>
 
         <lang.findUsagesProvider language="Prismio"
                                  implementationClass="com.vibrant.prismio.SimpleFindUsagesProvider"/>
-
-        <lang.foldingBuilder language="JAVA" implementationClass="com.vibrant.prismio.SimpleFoldingBuilder"/>
 
         <gotoSymbolContributor implementation="com.vibrant.prismio.SimpleChooseByNameContributor"/>
 
@@ -79,12 +77,6 @@
                                     implementationClass="com.vibrant.prismio.SimpleDocumentationProvider"/>
 
         <spellchecker.support language="Prismio" implementationClass="com.vibrant.prismio.SimpleSpellcheckingStrategy"/>
-
-        <!--        <actions>-->
-        <!--            <action id="Create.MyClass" class="com.example.CreateMyClassAction" icon="MyIcons.CLASS_ICON">-->
-        <!--                <add-to-group group-id="NewGroup"/>-->
-        <!--            </action>-->
-        <!--        </actions>-->
 
         <internalFileTemplate name="Prismio File"/>
         <fileTemplateGroup implementation="com.vibrant.prismio.template.PrismioTemplateGroupDescriptor"/>

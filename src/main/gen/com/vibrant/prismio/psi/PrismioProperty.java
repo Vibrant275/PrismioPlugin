@@ -19,5 +19,4 @@ public interface PrismioProperty extends PrismioNamedElement {
   PsiElement getNameIdentifier();
 
   ItemPresentation getPresentation();
-
 }

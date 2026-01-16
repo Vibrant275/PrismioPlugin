@@ -1,7 +1,5 @@
-
 {
   parserClass="com.vibrant.prismio.parser.PrismioParser"
-
   extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
 
   psiClassPrefix="Prismio"
@@ -12,24 +10,26 @@
   elementTypeHolderClass="com.vibrant.prismio.psi.PrismioTypes"
   elementTypeClass="com.vibrant.prismio.psi.PrismioElementType"
   tokenTypeClass="com.vibrant.prismio.psi.PrismioTokenType"
-
-  psiImplUtilClass="com.vibrant.prismio.psi.impl.PrismioPsiImplUtil"
 }
 
-simpleFile ::= item_*
+// Root rule - a Prismio file is just a sequence of items
+prismioFile ::= item_*
 
-private item_ ::= (property |
-COMMENT | CRLF | IDENTIFIER | OPERATOR | STRING_LITERAL
-| CHARACTER_LITERAL | BOOLEAN | MULTILINE_COMMENT | SINGLE_LINE_COMMENT | KEYWORD
-| INTEGER | FLOAT
- )
+// An item can be any top-level declaration or comment
+private item_ ::= (
+  KEYWORD
+  | TYPE_KEYWORD
+  | IDENTIFIER
+  | OPERATOR
+  | SEPARATOR
+  | STRING_LITERAL
+  | CHARACTER_LITERAL
+  | BOOLEAN
+  | MULTILINE_COMMENT
+  | SINGLE_LINE_COMMENT
+  | INTEGER
+  | FLOAT
+)
 
-property ::= (KEY? SEPARATOR VALUE?) | KEY {
-  pin=3
-  recoverWhile="recover_property"
-  mixin="com.vibrant.prismio.psi.impl.PrismioNamedElementImpl"
-  implements="com.vibrant.prismio.psi.PrismioNamedElement"
-  methods=[getKey getValue getName setName getNameIdentifier getPresentation]
-}
-
-private recover_property ::= !(KEY|SEPARATOR|COMMENT)
+// Simplified grammar - just for lexical highlighting
+// Full AST will be built by the C++ compiler

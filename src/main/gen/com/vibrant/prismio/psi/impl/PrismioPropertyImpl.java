@@ -56,5 +56,4 @@ public class PrismioPropertyImpl extends PrismioNamedElementImpl implements Pris
   public ItemPresentation getPresentation() {
     return PrismioPsiImplUtil.getPresentation(this);
   }
-
 }

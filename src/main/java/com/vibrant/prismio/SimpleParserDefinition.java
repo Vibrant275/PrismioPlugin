@@ -33,12 +33,10 @@ final class SimpleParserDefinition implements ParserDefinition {
     return PrismioTokenSets.COMMENTS;
   }
 
-
-
   @NotNull
   @Override
   public TokenSet getStringLiteralElements() {
-    return TokenSet.EMPTY;
+    return TokenSet.create(PrismioTypes.STRING_LITERAL, PrismioTypes.CHARACTER_LITERAL);
   }
 
   @NotNull
@@ -62,7 +60,8 @@ final class SimpleParserDefinition implements ParserDefinition {
   @NotNull
   @Override
   public PsiElement createElement(ASTNode node) {
-    return PrismioTypes.Factory.createElement(node);
+    // For simplified highlighting, we don't create complex PSI elements
+    // Just return basic wrapper
+    return new com.intellij.extapi.psi.ASTWrapperPsiElement(node);
   }
-
 }

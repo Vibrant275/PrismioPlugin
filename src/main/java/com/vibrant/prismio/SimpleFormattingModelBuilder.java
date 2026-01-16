@@ -9,22 +9,26 @@ final class SimpleFormattingModelBuilder implements FormattingModelBuilder {
 
   private static SpacingBuilder createSpaceBuilder(CodeStyleSettings settings) {
     return new SpacingBuilder(settings, PrismioLanguage.INSTANCE)
-        .around(PrismioTypes.SEPARATOR)
-        .spaceIf(settings.getCommonSettings(PrismioLanguage.INSTANCE.getID()).SPACE_AROUND_ASSIGNMENT_OPERATORS)
-        .before(PrismioTypes.PROPERTY)
-        .none();
+            // Space around operators like =, ==, !=, etc.
+            .around(PrismioTypes.OPERATOR)
+            .spaceIf(settings.getCommonSettings(PrismioLanguage.INSTANCE.getID()).SPACE_AROUND_ASSIGNMENT_OPERATORS)
+            // Space after comma
+            .after(PrismioTypes.SEPARATOR)
+            .spaceIf(true)
+            // Space before opening brace
+            .before(PrismioTypes.SEPARATOR)
+            .spaceIf(true);
   }
 
   @Override
   public @NotNull FormattingModel createModel(@NotNull FormattingContext formattingContext) {
     final CodeStyleSettings codeStyleSettings = formattingContext.getCodeStyleSettings();
     return FormattingModelProvider
-        .createFormattingModelForPsiFile(formattingContext.getContainingFile(),
-            new SimpleBlock(formattingContext.getNode(),
-                Wrap.createWrap(WrapType.NONE, false),
-                Alignment.createAlignment(),
-                createSpaceBuilder(codeStyleSettings)),
-            codeStyleSettings);
+            .createFormattingModelForPsiFile(formattingContext.getContainingFile(),
+                    new SimpleBlock(formattingContext.getNode(),
+                            Wrap.createWrap(WrapType.NONE, false),
+                            Alignment.createAlignment(),
+                            createSpaceBuilder(codeStyleSettings)),
+                    codeStyleSettings);
   }
-
 }

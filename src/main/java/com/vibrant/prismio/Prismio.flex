@@ -8,7 +8,6 @@ import com.intellij.lexer.FlexLexer;
 %%
 
 /* JFlex Settings */
-
 %public
 %class PsLexer
 %implements FlexLexer
@@ -20,62 +19,52 @@ import com.intellij.lexer.FlexLexer;
 
 // Lexer rules
 CRLF=\R
-WHITE_SPACE=[\ \n\t\f]
-FIRST_VALUE_CHARACTER=[^ \n\f\\] | "\\"{CRLF} | "\\".
-VALUE_CHARACTER=[^\n\f\\] | "\\"{CRLF} | "\\".
-
+WHITE_SPACE=[\ \n\t\f\r]
 SINGLE_LINE_COMMENT=("//")[^\r\n]*
-MULTILINE_COMMENT="/*" [^*] ~"*/" | "/*" "*"+ "/"*
+MULTILINE_COMMENT="/*" [^*] ~"*/" | "/*" "*"+ "/"
 
-SEPARATOR=[:=]
-KEY_CHARACTER=[^:=\ \n\t\f\\] | "\\ "
+// Literals
+STRING_LITERAL=\"([^\"\\]|\\.)*\"
+CHARACTER_LITERAL='([^'\\]|\\.)'
+INTEGER=-?[0-9]+
+FLOAT=-?[0-9]*\.[0-9]+([eE][+-]?[0-9]+)?
+BOOLEAN="true"|"false"
 
-/* Updated Patterns */
+// Keywords - exact matches
+KEYWORD="fn"|"let"|"mut"|"if"|"else"|"while"|"for"|"return"|"struct"|"enum"|"trait"|"impl"|"extern"|"import"|"in"|"loop"|"match"|"break"|"continue"
 
-STRING_LITERAL="\"([^\"\\]|\\.)*\""
-CHARACTER_LITERAL="'([^'\\]|\\.)'"
+// Type keywords
+TYPE_KEYWORD="Int"|"Bool"|"Char"|"String"|"Float"
 
-KEYWORD=(
-"if"|"else"|"while"|"for"|"break"|"continue"|"return" |
- "void" | "Int" | "Char" | "Bool" | "String" | "Float" | "class" | "enum" | "import"
-  )
+// Identifiers
+IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
 
-BOOLEAN=("true"|"false")
-IDENTIFIER=([a-zA-Z_][a-zA-Z0-9_]*)
-OPERATOR=("="|"<"|">"|"<="|">="|"=="|"!="|"+"|"-"|"*"|"/"|"%"|"!"|"&"|"|"|"^"|"~")
-FLOAT=(-?[0-9]*\.[0-9]+)
-INTEGER=(-?[0-9]+)
-
-
-
-// States
-%state WAITING_VALUE
+// Operators and separators
+OPERATOR="<="|">="|"=="|"!="|"+="|"-="|"*="|"/="|"%="|"++"|"--"|"->"|"=>"|"&&"|"||"|[+\-*/%<>=!&|]
+SEPARATOR=[(){}[\],:;.]]
 
 %%
 
-<YYINITIAL> {SINGLE_LINE_COMMENT} { yybegin(YYINITIAL); return PrismioTypes.SINGLE_LINE_COMMENT; }
+<YYINITIAL> {
+  {SINGLE_LINE_COMMENT}     { return PrismioTypes.SINGLE_LINE_COMMENT; }
+  {MULTILINE_COMMENT}       { return PrismioTypes.MULTILINE_COMMENT; }
 
-<YYINITIAL> {MULTILINE_COMMENT} { yybegin(YYINITIAL); return PrismioTypes.MULTILINE_COMMENT; }
-<YYINITIAL> {KEYWORD} { yybegin(YYINITIAL); return PrismioTypes.KEYWORD; }
-<YYINITIAL> {BOOLEAN} { yybegin(YYINITIAL); return PrismioTypes.BOOLEAN; }
-<YYINITIAL> {IDENTIFIER} { yybegin(YYINITIAL); return PrismioTypes.IDENTIFIER; }
-<YYINITIAL> {OPERATOR} { yybegin(YYINITIAL); return PrismioTypes.OPERATOR; }
-<YYINITIAL> {STRING_LITERAL} { yybegin(YYINITIAL); return PrismioTypes.STRING_LITERAL; }
-<YYINITIAL> {CHARACTER_LITERAL} { yybegin(YYINITIAL); return PrismioTypes.CHARACTER_LITERAL; }
-<YYINITIAL> {SEPARATOR} { yybegin(WAITING_VALUE); return PrismioTypes.SEPARATOR; }
-<YYINITIAL> {CRLF} { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-<YYINITIAL> {INTEGER} { yybegin(YYINITIAL); return PrismioTypes.INTEGER; }
-<YYINITIAL> {FLOAT} { yybegin(YYINITIAL); return PrismioTypes.FLOAT; }
+  {KEYWORD}                 { return PrismioTypes.KEYWORD; }
+  {TYPE_KEYWORD}            { return PrismioTypes.TYPE_KEYWORD; }
+  {BOOLEAN}                 { return PrismioTypes.BOOLEAN; }
 
+  {STRING_LITERAL}          { return PrismioTypes.STRING_LITERAL; }
+  {CHARACTER_LITERAL}       { return PrismioTypes.CHARACTER_LITERAL; }
+  {FLOAT}                   { return PrismioTypes.FLOAT; }
+  {INTEGER}                 { return PrismioTypes.INTEGER; }
 
+  {OPERATOR}                { return PrismioTypes.OPERATOR; }
+  {SEPARATOR}               { return PrismioTypes.SEPARATOR; }
 
-/* Waiting Value State Rules */
-<WAITING_VALUE> {CRLF}({CRLF}|{WHITE_SPACE})+               { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
-<WAITING_VALUE> {WHITE_SPACE}+                              { yybegin(WAITING_VALUE); return TokenType.WHITE_SPACE; }
-<WAITING_VALUE> {FIRST_VALUE_CHARACTER}{VALUE_CHARACTER}*   { yybegin(YYINITIAL); return PrismioTypes.VALUE; }
+  {IDENTIFIER}              { return PrismioTypes.IDENTIFIER; }
 
-/* General White Space Handling */
-({CRLF}|{WHITE_SPACE})+                                     { yybegin(YYINITIAL); return TokenType.WHITE_SPACE; }
+  {WHITE_SPACE}             { return TokenType.WHITE_SPACE; }
+  {CRLF}                    { return TokenType.WHITE_SPACE; }
+}
 
-/* Error Handling */
-[^]                                                         { return TokenType.BAD_CHARACTER; }
+[^]                         { return TokenType.BAD_CHARACTER; }

@@ -32,102 +32,48 @@ public class PrismioParser implements PsiParser, LightPsiParser {
   }
 
   static boolean parse_root_(IElementType t, PsiBuilder b, int l) {
-    return simpleFile(b, l + 1);
+    return prismioFile(b, l + 1);
   }
 
   /* ********************************************************** */
-  // property |
-  // COMMENT | CRLF | IDENTIFIER | OPERATOR | STRING_LITERAL
-  // | CHARACTER_LITERAL | BOOLEAN | MULTILINE_COMMENT | SINGLE_LINE_COMMENT | KEYWORD
-  // | INTEGER | FLOAT
+  // KEYWORD
+  //   | TYPE_KEYWORD
+  //   | IDENTIFIER
+  //   | OPERATOR
+  //   | SEPARATOR
+  //   | STRING_LITERAL
+  //   | CHARACTER_LITERAL
+  //   | BOOLEAN
+  //   | MULTILINE_COMMENT
+  //   | SINGLE_LINE_COMMENT
+  //   | INTEGER
+  //   | FLOAT
   static boolean item_(PsiBuilder b, int l) {
     if (!recursion_guard_(b, l, "item_")) return false;
     boolean r;
-    Marker m = enter_section_(b);
-    r = property(b, l + 1);
-    if (!r) r = consumeToken(b, COMMENT);
-    if (!r) r = consumeToken(b, CRLF);
+    r = consumeToken(b, KEYWORD);
+    if (!r) r = consumeToken(b, TYPE_KEYWORD);
     if (!r) r = consumeToken(b, IDENTIFIER);
     if (!r) r = consumeToken(b, OPERATOR);
+    if (!r) r = consumeToken(b, SEPARATOR);
     if (!r) r = consumeToken(b, STRING_LITERAL);
     if (!r) r = consumeToken(b, CHARACTER_LITERAL);
     if (!r) r = consumeToken(b, BOOLEAN);
     if (!r) r = consumeToken(b, MULTILINE_COMMENT);
     if (!r) r = consumeToken(b, SINGLE_LINE_COMMENT);
-    if (!r) r = consumeToken(b, KEYWORD);
     if (!r) r = consumeToken(b, INTEGER);
     if (!r) r = consumeToken(b, FLOAT);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  /* ********************************************************** */
-  // (KEY? SEPARATOR VALUE?) | KEY
-  public static boolean property(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NONE_, PROPERTY, "<property>");
-    r = property_0(b, l + 1);
-    if (!r) r = consumeToken(b, KEY);
-    exit_section_(b, l, m, r, false, PrismioParser::recover_property);
-    return r;
-  }
-
-  // KEY? SEPARATOR VALUE?
-  private static boolean property_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property_0")) return false;
-    boolean r;
-    Marker m = enter_section_(b);
-    r = property_0_0(b, l + 1);
-    r = r && consumeToken(b, SEPARATOR);
-    r = r && property_0_2(b, l + 1);
-    exit_section_(b, m, null, r);
-    return r;
-  }
-
-  // KEY?
-  private static boolean property_0_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property_0_0")) return false;
-    consumeToken(b, KEY);
-    return true;
-  }
-
-  // VALUE?
-  private static boolean property_0_2(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "property_0_2")) return false;
-    consumeToken(b, VALUE);
-    return true;
-  }
-
-  /* ********************************************************** */
-  // !(KEY|SEPARATOR|COMMENT)
-  static boolean recover_property(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "recover_property")) return false;
-    boolean r;
-    Marker m = enter_section_(b, l, _NOT_);
-    r = !recover_property_0(b, l + 1);
-    exit_section_(b, l, m, r, false, null);
-    return r;
-  }
-
-  // KEY|SEPARATOR|COMMENT
-  private static boolean recover_property_0(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "recover_property_0")) return false;
-    boolean r;
-    r = consumeToken(b, KEY);
-    if (!r) r = consumeToken(b, SEPARATOR);
-    if (!r) r = consumeToken(b, COMMENT);
     return r;
   }
 
   /* ********************************************************** */
   // item_*
-  static boolean simpleFile(PsiBuilder b, int l) {
-    if (!recursion_guard_(b, l, "simpleFile")) return false;
+  static boolean prismioFile(PsiBuilder b, int l) {
+    if (!recursion_guard_(b, l, "prismioFile")) return false;
     while (true) {
       int c = current_position_(b);
       if (!item_(b, l + 1)) break;
-      if (!empty_element_parsed_guard_(b, "simpleFile", c)) break;
+      if (!empty_element_parsed_guard_(b, "prismioFile", c)) break;
     }
     return true;
   }

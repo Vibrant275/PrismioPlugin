@@ -18,5 +18,4 @@ public class PrismioVisitor extends PsiElementVisitor {
   public void visitPsiElement(@NotNull PsiElement o) {
     visitElement(o);
   }
-
 }

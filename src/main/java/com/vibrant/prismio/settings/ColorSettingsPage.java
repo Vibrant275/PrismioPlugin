@@ -15,10 +15,16 @@ import java.util.Map;
 final class ColorSettingsPage implements com.intellij.openapi.options.colors.ColorSettingsPage {
 
   private static final AttributesDescriptor[] DESCRIPTORS = new AttributesDescriptor[]{
-      new AttributesDescriptor("Key", PsSyntaxHighlighter.KEYWORD),
-      new AttributesDescriptor("Separator", PsSyntaxHighlighter.SEPARATOR),
-      new AttributesDescriptor("Value", PsSyntaxHighlighter.TEXT_CHAR),
-      new AttributesDescriptor("Bad value", PsSyntaxHighlighter.BAD_CHARACTER)
+          new AttributesDescriptor("Keywords", PsSyntaxHighlighter.KEYWORD),
+          new AttributesDescriptor("Type Keywords", PsSyntaxHighlighter.TYPE_KEYWORD),
+          new AttributesDescriptor("Identifiers", PsSyntaxHighlighter.IDENTIFIER),
+          new AttributesDescriptor("Numbers", PsSyntaxHighlighter.NUMBER),
+          new AttributesDescriptor("Strings", PsSyntaxHighlighter.STRING),
+          new AttributesDescriptor("Operators", PsSyntaxHighlighter.OPERATOR),
+          new AttributesDescriptor("Separators (Braces, Parentheses)", PsSyntaxHighlighter.SEPARATOR),
+          new AttributesDescriptor("Line Comments", PsSyntaxHighlighter.LINE_COMMENT),
+          new AttributesDescriptor("Block Comments", PsSyntaxHighlighter.BLOCK_COMMENT),
+          new AttributesDescriptor("Bad Character", PsSyntaxHighlighter.BAD_CHARACTER)
   };
 
   @Override
@@ -36,18 +42,71 @@ final class ColorSettingsPage implements com.intellij.openapi.options.colors.Col
   @Override
   public String getDemoText() {
     return """
-        # You are reading the ".properties" entry.
-        ! The exclamation mark can also mark text as comments.
-        website = https://en.wikipedia.org/
-        language = English
-        # The backslash below tells the application to continue reading
-        # the value onto the next line.
-        message = Welcome to \\
-                  Wikipedia!
-        # Add spaces to the key
-        key\\ with\\ spaces = This is the value that could be looked up with the key "key with spaces".
-        # Unicode
-        tab : \\u0009""";
+        // Prismio Language Demo
+        /* Multi-line comment
+           demonstrating syntax highlighting */
+        
+        import prismio.io
+        
+        extern fn println(msg: String)
+        extern fn println_int(value: Int)
+        
+        struct Point {
+            x: Int,
+            y: Int
+        }
+        
+        enum Direction {
+            North,
+            South,
+            East,
+            West
+        }
+        
+        fn calculate(a: Int, b: Int) -> Int {
+            let mut result = 0
+            let sum = a + b
+            let diff = a - b
+            
+            if (sum > 10) {
+                result = sum * 2
+            } else {
+                result = diff / 2
+            }
+            
+            return result
+        }
+        
+        fn fibonacci(n: Int) -> Int {
+            if (n <= 1) {
+                return n
+            } else {
+                let a = fibonacci(n - 1)
+                let b = fibonacci(n - 2)
+                return a + b
+            }
+        }
+        
+        fn main() {
+            let x = 42
+            let y = 3.14
+            let name = "Prismio"
+            let flag = true
+            let ch = 'A'
+            
+            let result = calculate(10, 5)
+            println_int(result)
+            
+            let mut counter = 0
+            while (counter < 10) {
+                counter = counter + 1
+            }
+            
+            for (i in range) {
+                println_int(i)
+            }
+        }
+        """;
   }
 
   @Nullable
@@ -71,5 +130,4 @@ final class ColorSettingsPage implements com.intellij.openapi.options.colors.Col
   public String getDisplayName() {
     return "Prismio";
   }
-
 }
