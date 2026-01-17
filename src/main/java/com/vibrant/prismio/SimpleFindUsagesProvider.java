@@ -6,7 +6,7 @@ import com.intellij.lang.findUsages.FindUsagesProvider;
 import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiNamedElement;
 import com.intellij.psi.tree.TokenSet;
-import com.vibrant.prismio.annotations.SimpleAnnotator;
+import com.vibrant.prismio.annotator.PrismioAnnotator;
 import com.vibrant.prismio.lexer.LexerAdapter;
 import com.vibrant.prismio.psi.PrismioProperty;
 import com.vibrant.prismio.psi.PrismioTokenSets;
@@ -57,7 +57,7 @@ final class SimpleFindUsagesProvider implements FindUsagesProvider {
   public String getNodeText(@NotNull PsiElement element, boolean useFullName) {
     if (element instanceof PrismioProperty) {
       return ((PrismioProperty) element).getKey() +
-          SimpleAnnotator.PS_SEPARATOR_STR +
+          PrismioAnnotator.PS_SEPARATOR_STR +
           ((PrismioProperty) element).getValue();
     }
     return "";

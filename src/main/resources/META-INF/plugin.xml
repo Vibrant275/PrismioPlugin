@@ -1,101 +1,200 @@
 <idea-plugin>
-
-    <!-- Unique id for this plugin. Must stay constant for the life of the plugin. -->
     <id>com.vibrant.prismio</id>
-
-    <!-- Text to display as name on Settings | Plugin page -->
-    <name>Prismio</name>
-
-    <!-- Product and plugin compatibility requirements -->
-    <depends>com.intellij.modules.platform</depends>
-
-    <!-- Text to display as description on Settings | Plugin page -->
-    <description>
-        <![CDATA[
-    Provides language support for Prismio, a modern programming language designed for maximum performance.
-    Features include:
-    - Syntax highlighting
-    - Code completion
-    - Error detection
-    - Code formatting
-    ]]>
-    </description>
-    <change-notes>
-        <![CDATA[
-      <ul>
-        <li><b>0.0.3</b>Complete syntax highlighting for .psm files</li>
-        <li><b>0.0.2</b>Logo Update and Fixes</li>
-        <li><b>0.0.1</b>Initial test release.</li>
-      </ul>
-    ]]>
-    </change-notes>
-
+    <name>Prismio Language Support</name>
     <vendor url="https://github.com/Vibrant275">Vibrant</vendor>
 
+    <description><![CDATA[
+        <h2>Prismio Language Support</h2>
+        <p>
+            Complete language support for Prismio - a modern, performance-focused programming language.
+        </p>
+
+        <h3>Features:</h3>
+        <ul>
+            <li><b>Advanced Syntax Highlighting</b> - Rich, context-aware color schemes for all language constructs</li>
+            <li><b>Smart Code Completion</b> - Intelligent suggestions for keywords, types, and common patterns</li>
+            <li><b>Code Formatting</b> - Automatic code formatting with customizable style settings</li>
+            <li><b>Semantic Analysis</b> - Real-time detection of common issues and best practices</li>
+            <li><b>Live Templates</b> - Quick code generation for common patterns</li>
+            <li><b>Brace Matching</b> - Automatic completion of parentheses, brackets, and braces</li>
+            <li><b>Comment Support</b> - Line and block comment toggling</li>
+            <li><b>Structure View</b> - Navigate your code with the structure panel</li>
+            <li><b>File Templates</b> - Create new files with predefined templates</li>
+        </ul>
+
+        <h3>Supported Features:</h3>
+        <ul>
+            <li>Functions and parameters</li>
+            <li>Structs and enums</li>
+            <li>Traits and implementations</li>
+            <li>Control flow (if/else, while, for, loop, match)</li>
+            <li>Variable declarations (let, let mut)</li>
+            <li>External function declarations</li>
+            <li>Import statements</li>
+            <li>Arrays and array indexing</li>
+            <li>String operations</li>
+        </ul>
+    ]]></description>
+
+    <change-notes><![CDATA[
+        <h3>Version 1.0.0 - Complete Release</h3>
+        <ul>
+            <li>✨ Complete syntax highlighting with semantic analysis</li>
+            <li>✨ Smart code completion for keywords, types, and templates</li>
+            <li>✨ Advanced code formatter with customizable settings</li>
+            <li>✨ Live templates for common code patterns</li>
+            <li>✨ Automatic brace, bracket, and quote matching</li>
+            <li>✨ Comment toggling support (Ctrl+/)</li>
+            <li>✨ Comprehensive color settings page</li>
+            <li>✨ Enhanced file icons and visual indicators</li>
+            <li>✨ Code structure navigation</li>
+            <li>✨ File templates for quick project setup</li>
+        </ul>
+
+        <h3>Version 0.0.3</h3>
+        <ul>
+            <li>Basic syntax highlighting for .psm files</li>
+        </ul>
+
+        <h3>Version 0.0.2</h3>
+        <ul>
+            <li>Logo update and minor fixes</li>
+        </ul>
+
+        <h3>Version 0.0.1</h3>
+        <ul>
+            <li>Initial test release</li>
+        </ul>
+    ]]></change-notes>
+
+    <depends>com.intellij.modules.platform</depends>
+
     <extensions defaultExtensionNs="com.intellij">
+        <!-- File Type -->
+        <fileType
+                name="Prismio File"
+                implementationClass="com.vibrant.prismio.PsFileType"
+                fieldName="INSTANCE"
+                language="Prismio"
+                extensions="psm"/>
 
-        <fileType name="Prismio File" implementationClass="com.vibrant.prismio.PsFileType" fieldName="INSTANCE"
-                  language="Prismio" extensions="psm"/>
+        <!-- Parser and Lexer -->
+        <lang.parserDefinition
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.SimpleParserDefinition"/>
 
-        <lang.parserDefinition language="Prismio" implementationClass="com.vibrant.prismio.SimpleParserDefinition"/>
+        <!-- Syntax Highlighting -->
+        <lang.syntaxHighlighterFactory
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.highlighter.PsSyntaxHighlighterFactory"/>
 
-        <lang.syntaxHighlighterFactory language="Prismio"
-                                       implementationClass="com.vibrant.prismio.highlighter.PsSyntaxHighlighterFactory"/>
+        <!-- Color Settings -->
+        <colorSettingsPage
+                implementation="com.vibrant.prismio.settings.PrismioColorSettingsPage"/>
 
-        <iconProvider implementation="com.vibrant.prismio.providers.PsPropertyIconProvider"/>
+        <!-- Annotator for Semantic Highlighting -->
+        <annotator
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.annotator.PrismioAnnotator"/>
 
-        <colorSettingsPage implementation="com.vibrant.prismio.settings.ColorSettingsPage"/>
+        <!-- Code Completion -->
+        <completion.contributor
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.completion.PrismioCompletionContributor"/>
 
-        <!-- Annotator for Prismio files only -->
-        <annotator language="Prismio" implementationClass="com.vibrant.prismio.annotations.SimpleAnnotator"/>
+        <!-- Code Formatting -->
+        <lang.formatter
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.PrismioFormattingModelBuilder"/>
 
-        <completion.contributor language="Prismio"
-                                implementationClass="com.vibrant.prismio.SimpleCompletionContributor"/>
+        <!-- Code Style Settings -->
+        <codeStyleSettingsProvider
+                implementation="com.vibrant.prismio.SimpleCodeStyleSettingsProvider"/>
 
-        <lang.refactoringSupport language="Prismio"
-                                 implementationClass="com.vibrant.prismio.SimpleRefactoringSupportProvider"/>
+        <langCodeStyleSettingsProvider
+                implementation="com.vibrant.prismio.LanguageCodeStyleSettingsProvider"/>
 
-        <lang.findUsagesProvider language="Prismio"
-                                 implementationClass="com.vibrant.prismio.SimpleFindUsagesProvider"/>
+        <!-- Comment Support -->
+        <lang.commenter
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.Commenter"/>
 
-        <gotoSymbolContributor implementation="com.vibrant.prismio.SimpleChooseByNameContributor"/>
+        <!-- Brace Matching -->
+        <lang.braceMatcher
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.PrismioBraceMatcher"/>
 
-        <lang.psiStructureViewFactory language="Prismio"
-                                      implementationClass="com.vibrant.prismio.SimpleStructureViewFactory"/>
+        <!-- Quote Handler -->
+        <lang.quoteHandler
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.PrismioQuoteHandler"/>
 
-        <navbar implementation="com.vibrant.prismio.SimpleStructureAwareNavbar"/>
+        <!-- Typed Handler for Auto-completion -->
+        <typedHandler
+                implementation="com.vibrant.prismio.handler.PrismioTypedHandler"/>
 
-        <typedHandler implementation="com.vibrant.prismio.handler.PrismioTypedHandler"/>
+        <!-- Structure View -->
+        <lang.psiStructureViewFactory
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.SimpleStructureViewFactory"/>
 
-        <lang.formatter language="Prismio" implementationClass="com.vibrant.prismio.PrismioFormattingModelBuilder"/>
+        <!-- Navigation Bar -->
+        <navbar
+                implementation="com.vibrant.prismio.SimpleStructureAwareNavbar"/>
 
-        <codeStyleSettingsProvider implementation="com.vibrant.prismio.SimpleCodeStyleSettingsProvider"/>
+        <!-- Icon Provider -->
+        <iconProvider
+                implementation="com.vibrant.prismio.providers.PsPropertyIconProvider"/>
 
-        <langCodeStyleSettingsProvider implementation="com.vibrant.prismio.LanguageCodeStyleSettingsProvider"/>
-
-        <lang.commenter language="Prismio" implementationClass="com.vibrant.prismio.Commenter"/>
-
-        <lang.documentationProvider language="Prismio"
-                                    implementationClass="com.vibrant.prismio.SimpleDocumentationProvider"/>
-
-        <spellchecker.support language="Prismio" implementationClass="com.vibrant.prismio.SimpleSpellcheckingStrategy"/>
-
+        <!-- File Templates -->
         <internalFileTemplate name="Prismio File"/>
-        <fileTemplateGroup implementation="com.vibrant.prismio.template.PrismioTemplateGroupDescriptor"/>
+        <fileTemplateGroup
+                implementation="com.vibrant.prismio.template.PrismioTemplateGroupDescriptor"/>
 
-        <lang.foldingBuilder language="Prismio"
-                             implementationClass="com.vibrant.prismio.SimpleFoldingBuilder"/>
+        <!-- Find Usages -->
+        <lang.findUsagesProvider
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.SimpleFindUsagesProvider"/>
 
-        <codeInsight.lineMarkerProvider language="Prismio"
-                                        implementationClass="com.vibrant.prismio.SimpleLineMarkerProvider"/>
+        <!-- Refactoring Support -->
+        <lang.refactoringSupport
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.SimpleRefactoringSupportProvider"/>
+
+        <!-- Documentation Provider -->
+        <lang.documentationProvider
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.SimpleDocumentationProvider"/>
+
+        <!-- Folding Builder -->
+        <lang.foldingBuilder
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.SimpleFoldingBuilder"/>
+
+        <!-- Line Marker Provider -->
+        <codeInsight.lineMarkerProvider
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.SimpleLineMarkerProvider"/>
+
+        <!-- Spellchecking -->
+        <spellchecker.support
+                language="Prismio"
+                implementationClass="com.vibrant.prismio.SimpleSpellcheckingStrategy"/>
+
+        <!-- Go to Symbol -->
+        <gotoSymbolContributor
+                implementation="com.vibrant.prismio.SimpleChooseByNameContributor"/>
     </extensions>
 
-
     <actions>
-        <action id="com.vibrant.prismio.template.CreateClassAction"
-                class="com.vibrant.prismio.template.CreateClassAction" text="Prismio" icon="/icons/prismio.png">
-            <add-to-group group-id="NewGroup1"/>
+        <!-- New File Action -->
+        <action
+                id="com.vibrant.prismio.template.CreateClassAction"
+                class="com.vibrant.prismio.template.CreateClassAction"
+                text="Prismio File"
+                description="Create new Prismio file"
+                icon="/icons/prismio.png">
+            <add-to-group group-id="NewGroup" anchor="first"/>
         </action>
     </actions>
-
 </idea-plugin>

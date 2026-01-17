@@ -16,7 +16,7 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiLiteralExpression;
 import com.intellij.psi.util.PsiLiteralUtil;
 import com.intellij.util.containers.ContainerUtil;
-import com.vibrant.prismio.annotations.SimpleAnnotator;
+import com.vibrant.prismio.annotator.PrismioAnnotator;
 import com.vibrant.prismio.psi.PrismioProperty;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -32,7 +32,7 @@ final class SimpleFoldingBuilder extends FoldingBuilderEx implements DumbAware {
                                                         @NotNull Document document,
                                                         boolean quick) {
     // Initialize the group of folding regions that will expand/collapse together.
-    FoldingGroup group = FoldingGroup.newGroup(SimpleAnnotator.PS_PREFIX_STR);
+    FoldingGroup group = FoldingGroup.newGroup(PrismioAnnotator.PS_PREFIX_STR);
     // Initialize the list of folding regions
     List<FoldingDescriptor> descriptors = new ArrayList<>();
 
@@ -44,10 +44,11 @@ final class SimpleFoldingBuilder extends FoldingBuilderEx implements DumbAware {
 
         String value = PsiLiteralUtil.getStringLiteralContent(literalExpression);
         if (value != null &&
-            value.startsWith(SimpleAnnotator.PS_PREFIX_STR + SimpleAnnotator.PS_SEPARATOR_STR)) {
+            value.startsWith(PrismioAnnotator.PS_PREFIX_STR + PrismioAnnotator.PS_SEPARATOR_STR)) {
           Project project = literalExpression.getProject();
           String key = value.substring(
-              SimpleAnnotator.PS_PREFIX_STR.length() + SimpleAnnotator.PS_SEPARATOR_STR.length()
+              PrismioAnnotator
+                      .PS_PREFIX_STR.length() + PrismioAnnotator.PS_SEPARATOR_STR.length()
           );
           // find PrismioProperty for the given key in the project
           PrismioProperty simpleProperty = ContainerUtil.getOnlyItem(SimpleUtil.findProperties(project, key));
@@ -81,8 +82,8 @@ final class SimpleFoldingBuilder extends FoldingBuilderEx implements DumbAware {
         return null;
       }
 
-      String key = text.substring(SimpleAnnotator.PS_PREFIX_STR.length() +
-          SimpleAnnotator.PS_SEPARATOR_STR.length());
+      String key = text.substring(PrismioAnnotator.PS_PREFIX_STR.length() +
+          PrismioAnnotator.PS_SEPARATOR_STR.length());
 
       PrismioProperty simpleProperty = ContainerUtil.getOnlyItem(
           SimpleUtil.findProperties(psiLiteralExpression.getProject(), key)

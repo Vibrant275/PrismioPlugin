@@ -13,42 +13,75 @@ import org.jetbrains.annotations.NotNull;
 
 import static com.intellij.openapi.editor.colors.TextAttributesKey.createTextAttributesKey;
 
+/**
+ * Complete Syntax Highlighter for Prismio Language
+ * Provides rich color schemes for all token types
+ */
 public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
 
-  // Define color keys for different token types
+  // Keywords
   public static final TextAttributesKey KEYWORD =
           createTextAttributesKey("PRISMIO_KEYWORD", DefaultLanguageHighlighterColors.KEYWORD);
 
   public static final TextAttributesKey TYPE_KEYWORD =
           createTextAttributesKey("PRISMIO_TYPE", DefaultLanguageHighlighterColors.CLASS_NAME);
 
+  // Literals
   public static final TextAttributesKey STRING =
           createTextAttributesKey("PRISMIO_STRING", DefaultLanguageHighlighterColors.STRING);
 
   public static final TextAttributesKey NUMBER =
           createTextAttributesKey("PRISMIO_NUMBER", DefaultLanguageHighlighterColors.NUMBER);
 
+  public static final TextAttributesKey BOOLEAN =
+          createTextAttributesKey("PRISMIO_BOOLEAN", DefaultLanguageHighlighterColors.KEYWORD);
+
+  public static final TextAttributesKey CHARACTER =
+          createTextAttributesKey("PRISMIO_CHAR", DefaultLanguageHighlighterColors.STRING);
+
+  // Operators and separators
   public static final TextAttributesKey OPERATOR =
           createTextAttributesKey("PRISMIO_OPERATOR", DefaultLanguageHighlighterColors.OPERATION_SIGN);
 
   public static final TextAttributesKey SEPARATOR =
           createTextAttributesKey("PRISMIO_SEPARATOR", DefaultLanguageHighlighterColors.BRACES);
 
+  public static final TextAttributesKey COMMA =
+          createTextAttributesKey("PRISMIO_COMMA", DefaultLanguageHighlighterColors.COMMA);
+
+  public static final TextAttributesKey SEMICOLON =
+          createTextAttributesKey("PRISMIO_SEMICOLON", DefaultLanguageHighlighterColors.SEMICOLON);
+
+  public static final TextAttributesKey DOT =
+          createTextAttributesKey("PRISMIO_DOT", DefaultLanguageHighlighterColors.DOT);
+
+  // Comments
   public static final TextAttributesKey LINE_COMMENT =
           createTextAttributesKey("PRISMIO_LINE_COMMENT", DefaultLanguageHighlighterColors.LINE_COMMENT);
 
   public static final TextAttributesKey BLOCK_COMMENT =
           createTextAttributesKey("PRISMIO_BLOCK_COMMENT", DefaultLanguageHighlighterColors.BLOCK_COMMENT);
 
+  // Identifiers
   public static final TextAttributesKey IDENTIFIER =
           createTextAttributesKey("PRISMIO_IDENTIFIER", DefaultLanguageHighlighterColors.IDENTIFIER);
 
-  public static final TextAttributesKey FUNCTION =
-          createTextAttributesKey("PRISMIO_FUNCTION", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
+  public static final TextAttributesKey FUNCTION_DECLARATION =
+          createTextAttributesKey("PRISMIO_FUNCTION_DECL", DefaultLanguageHighlighterColors.FUNCTION_DECLARATION);
 
-  public static final TextAttributesKey TEXT_CHAR =
-          createTextAttributesKey("PRISMIO_TEXT_CHAR", DefaultLanguageHighlighterColors.STRING);
+  public static final TextAttributesKey FUNCTION_CALL =
+          createTextAttributesKey("PRISMIO_FUNCTION_CALL", DefaultLanguageHighlighterColors.FUNCTION_CALL);
 
+  public static final TextAttributesKey PARAMETER =
+          createTextAttributesKey("PRISMIO_PARAMETER", DefaultLanguageHighlighterColors.PARAMETER);
+
+  public static final TextAttributesKey STRUCT_NAME =
+          createTextAttributesKey("PRISMIO_STRUCT", DefaultLanguageHighlighterColors.CLASS_NAME);
+
+  public static final TextAttributesKey ENUM_NAME =
+          createTextAttributesKey("PRISMIO_ENUM", DefaultLanguageHighlighterColors.CLASS_NAME);
+
+  // Special
   public static final TextAttributesKey BAD_CHARACTER =
           createTextAttributesKey("PRISMIO_BAD_CHARACTER", HighlighterColors.BAD_CHARACTER);
 
@@ -57,8 +90,13 @@ public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
   private static final TextAttributesKey[] TYPE_KEYS = new TextAttributesKey[]{TYPE_KEYWORD};
   private static final TextAttributesKey[] STRING_KEYS = new TextAttributesKey[]{STRING};
   private static final TextAttributesKey[] NUMBER_KEYS = new TextAttributesKey[]{NUMBER};
+  private static final TextAttributesKey[] BOOLEAN_KEYS = new TextAttributesKey[]{BOOLEAN};
+  private static final TextAttributesKey[] CHAR_KEYS = new TextAttributesKey[]{CHARACTER};
   private static final TextAttributesKey[] OPERATOR_KEYS = new TextAttributesKey[]{OPERATOR};
   private static final TextAttributesKey[] SEPARATOR_KEYS = new TextAttributesKey[]{SEPARATOR};
+  private static final TextAttributesKey[] COMMA_KEYS = new TextAttributesKey[]{COMMA};
+  private static final TextAttributesKey[] DOT_KEYS = new TextAttributesKey[]{DOT};
+  private static final TextAttributesKey[] SEMICOLON_KEYS = new TextAttributesKey[]{SEMICOLON};
   private static final TextAttributesKey[] LINE_COMMENT_KEYS = new TextAttributesKey[]{LINE_COMMENT};
   private static final TextAttributesKey[] BLOCK_COMMENT_KEYS = new TextAttributesKey[]{BLOCK_COMMENT};
   private static final TextAttributesKey[] IDENTIFIER_KEYS = new TextAttributesKey[]{IDENTIFIER};
@@ -83,13 +121,13 @@ public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
       return STRING_KEYS;
     }
     if (tokenType.equals(PrismioTypes.CHARACTER_LITERAL)) {
-      return STRING_KEYS;
+      return CHAR_KEYS;
     }
     if (tokenType.equals(PrismioTypes.INTEGER) || tokenType.equals(PrismioTypes.FLOAT)) {
       return NUMBER_KEYS;
     }
     if (tokenType.equals(PrismioTypes.BOOLEAN)) {
-      return NUMBER_KEYS; // Use number color for boolean literals
+      return BOOLEAN_KEYS;
     }
     if (tokenType.equals(PrismioTypes.OPERATOR)) {
       return OPERATOR_KEYS;

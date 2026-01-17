@@ -1,5 +1,3 @@
-// Copyright 2000-2023 JetBrains s.r.o. and other contributors. Use of this source code is governed by the Apache 2.0 license that can be found in the LICENSE file.
-
 package com.vibrant.prismio;
 
 import com.intellij.openapi.util.TextRange;
@@ -8,8 +6,8 @@ import com.intellij.psi.*;
 import com.intellij.util.ProcessingContext;
 import org.jetbrains.annotations.NotNull;
 
-import static com.vibrant.prismio.annotations.SimpleAnnotator.PS_PREFIX_STR;
-import static com.vibrant.prismio.annotations.SimpleAnnotator.PS_SEPARATOR_STR;
+import static com.vibrant.prismio.annotator.PrismioAnnotator.PS_PREFIX_STR;
+import static com.vibrant.prismio.annotator.PrismioAnnotator.PS_SEPARATOR_STR;
 
 final class SimpleReferenceContributor extends PsiReferenceContributor {
 
