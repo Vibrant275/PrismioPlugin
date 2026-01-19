@@ -15,142 +15,126 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Enhanced code formatter for Prismio with comprehensive spacing rules
+ * Enhanced code formatter for Prismio with comprehensive spacing rules.
+ * Uses brace counting for indentation since PSI tree is flat (no block nodes).
  */
 public class PrismioBlock extends AbstractBlock {
 
   private final CodeStyleSettings settings;
   private final SpacingBuilder spacingBuilder;
+  private final int indentLevel;
 
   public PrismioBlock(@NotNull ASTNode node,
-                      @Nullable Wrap wrap,
-                      @Nullable Alignment alignment,
-                      CodeStyleSettings settings) {
+      @Nullable Wrap wrap,
+      @Nullable Alignment alignment,
+      CodeStyleSettings settings) {
+    this(node, wrap, alignment, settings, 0);
+  }
+
+  public PrismioBlock(@NotNull ASTNode node,
+      @Nullable Wrap wrap,
+      @Nullable Alignment alignment,
+      CodeStyleSettings settings,
+      int indentLevel) {
     super(node, wrap, alignment);
     this.settings = settings;
     this.spacingBuilder = createSpacingBuilder(settings);
+    this.indentLevel = indentLevel;
   }
 
   private static SpacingBuilder createSpacingBuilder(CodeStyleSettings settings) {
     return new SpacingBuilder(settings, PrismioLanguage.INSTANCE)
-            // Around operators
-            .around(PrismioTypes.OPERATOR).spaces(1)
+        // Arrow operators - space on both sides for return type arrows
+        .around(PrismioTypes.ARROW).spaces(1)
+        .around(PrismioTypes.FAT_ARROW).spaces(1)
 
-            // After keywords
-            .after(PrismioTypes.KEYWORD).spaces(1)
-            .after(PrismioTypes.TYPE_KEYWORD).spaces(1)
+        // Around all operators - space on both sides
+        .around(PrismioTypes.ARITHMETIC_OP).spaces(1)
+        .around(PrismioTypes.RELATIONAL_OP).spaces(1)
+        .around(PrismioTypes.ASSIGNMENT_OP).spaces(1)
+        .around(PrismioTypes.LOGICAL_OP).spaces(1)
+        .around(PrismioTypes.COMPARISON).spaces(1)
+        .around(PrismioTypes.OPERATOR).spaces(1)
+        .around(PrismioTypes.BITWISE).spaces(1)
 
-            // Around separators - general rules
-            .before(PrismioTypes.SEPARATOR).spacing(0, 1, 0, false, 0)
-            .after(PrismioTypes.SEPARATOR).spacing(0, 1, 0, false, 0)
+        // After keywords - single space
+        .after(PrismioTypes.KEYWORD).spaces(1)
+        // Space before type keywords
+        .before(PrismioTypes.TYPE_KEYWORD).spaces(1)
 
-            // Braces
-            .before(PrismioTypes.LBRACE).spaces(1)
-            .after(PrismioTypes.LBRACE).lineBreakInCode()
-            .before(PrismioTypes.RBRACE).lineBreakInCode()
-            .after(PrismioTypes.RBRACE).blankLines(1)
+        // Identifiers - no extra space after by default
+        .after(PrismioTypes.IDENTIFIER).spaces(0)
 
-            // Around function declarations (if exists)
-            .before(PrismioTypes.FUNCTION_DECL).blankLines(1)
-            .after(PrismioTypes.FUNCTION_DECL).blankLines(1)
+        // Specific separators
+        .before(PrismioTypes.COMMA).spaces(0)
+        .after(PrismioTypes.COMMA).spaces(1)
+        .before(PrismioTypes.COLON).spaces(0)
+        .after(PrismioTypes.COLON).spaces(1)
+        .around(PrismioTypes.DOT).spaces(0)
 
-            // Comments
-            .before(PrismioTypes.SINGLE_LINE_COMMENT).lineBreakInCode()
-            .after(PrismioTypes.SINGLE_LINE_COMMENT).lineBreakInCode()
-            .before(PrismioTypes.MULTILINE_COMMENT).lineBreakInCode()
-            .after(PrismioTypes.MULTILINE_COMMENT).lineBreakInCode();
+        // Braces - space before opening brace
+        .before(PrismioTypes.LBRACE).spaces(1)
+
+        // Parentheses - no internal spacing
+        .after(PrismioTypes.LPAREN).spaces(0)
+        .before(PrismioTypes.RPAREN).spaces(0)
+        .before(PrismioTypes.LPAREN).spaces(0)
+
+        // Brackets - no internal spacing
+        .after(PrismioTypes.LBRACKET).spaces(0)
+        .before(PrismioTypes.RBRACKET).spaces(0);
   }
 
   @Override
   protected List<Block> buildChildren() {
     List<Block> blocks = new ArrayList<>();
     ASTNode child = myNode.getFirstChildNode();
+    int currentIndent = 0;
 
     while (child != null) {
       if (child.getElementType() != TokenType.WHITE_SPACE &&
-              child.getTextLength() > 0) {
+          child.getTextLength() > 0) {
+
+        IElementType type = child.getElementType();
+
+        // Decrease indent BEFORE adding RBRACE
+        if (type == PrismioTypes.RBRACE) {
+          currentIndent = Math.max(0, currentIndent - 1);
+        }
 
         Block block = new PrismioBlock(
-                child,
-                Wrap.createWrap(WrapType.NONE, false),
-                createChildAlignment(child),
-                settings
-        );
+            child,
+            Wrap.createWrap(WrapType.NONE, false),
+            null,
+            settings,
+            currentIndent);
         blocks.add(block);
+
+        // Increase indent AFTER adding LBRACE
+        if (type == PrismioTypes.LBRACE) {
+          currentIndent++;
+        }
       }
       child = child.getTreeNext();
     }
     return blocks;
   }
 
-  private Alignment createChildAlignment(ASTNode child) {
-    // Align parameters in function declarations
-    if (isInFunctionParameters(child)) {
-      return Alignment.createAlignment();
-    }
-
-    // Align struct fields
-    if (isInStructDeclaration(child)) {
-      return Alignment.createAlignment();
-    }
-
-    return null;
-  }
-
-  private boolean isInFunctionParameters(ASTNode node) {
-    ASTNode parent = node.getTreeParent();
-    return parent != null && parent.getElementType() == PrismioTypes.FUNCTION_DECL;
-  }
-
-  private boolean isInStructDeclaration(ASTNode node) {
-    ASTNode parent = node.getTreeParent();
-    while (parent != null) {
-      // Check if we're in a block that follows the 'struct' keyword
-      IElementType parentType = parent.getElementType();
-      if (parentType == PrismioTypes.BLOCK) {
-        // Look for 'struct' keyword before this block
-        ASTNode prevSibling = parent.getTreePrev();
-        while (prevSibling != null) {
-          if (prevSibling.getElementType() == PrismioTypes.KEYWORD &&
-                  "struct".equals(prevSibling.getText())) {
-            return true;
-          }
-          prevSibling = prevSibling.getTreePrev();
-        }
-      }
-      parent = parent.getTreeParent();
-    }
-    return false;
-  }
-
   @Override
   public Indent getIndent() {
-    IElementType parentType = myNode.getTreeParent() != null ?
-            myNode.getTreeParent().getElementType() : null;
-
-    // Indent content inside blocks
-    if (parentType == PrismioTypes.BLOCK ||
-            parentType == PrismioTypes.FUNCTION_DECL) {
-
-      // Don't indent braces themselves
-      if (myNode.getElementType() == PrismioTypes.LBRACE ||
-              myNode.getElementType() == PrismioTypes.RBRACE) {
-        return Indent.getNoneIndent();
-      }
-
-      return Indent.getNormalIndent();
+    // For tokens at file level, use their calculated indent level
+    if (indentLevel > 0) {
+      // Return a specific indent based on the level
+      return Indent.getSpaceIndent(indentLevel * 4);
     }
-
     return Indent.getNoneIndent();
   }
 
   @Nullable
   @Override
   public Spacing getSpacing(@Nullable Block child1, @NotNull Block child2) {
-    if (child1 instanceof PrismioBlock && child2 instanceof PrismioBlock) {
-      return spacingBuilder.getSpacing(this, child1, child2);
-    }
-    return null;
+    // Always apply spacing rules from the builder
+    return spacingBuilder.getSpacing(this, child1, child2);
   }
 
   @Override
@@ -161,14 +145,25 @@ public class PrismioBlock extends AbstractBlock {
   @NotNull
   @Override
   public ChildAttributes getChildAttributes(int newChildIndex) {
-    IElementType type = myNode.getElementType();
+    // Get the indent level for new children based on brace context
+    List<Block> children = getSubBlocks();
+    int braceDepth = 0;
 
-    // Indent children in blocks
-    if (type == PrismioTypes.BLOCK ||
-            type == PrismioTypes.FUNCTION_DECL) {
-      return new ChildAttributes(Indent.getNormalIndent(), null);
+    for (int i = 0; i < newChildIndex && i < children.size(); i++) {
+      Block block = children.get(i);
+      if (block instanceof PrismioBlock) {
+        IElementType type = ((PrismioBlock) block).myNode.getElementType();
+        if (type == PrismioTypes.LBRACE) {
+          braceDepth++;
+        } else if (type == PrismioTypes.RBRACE) {
+          braceDepth = Math.max(0, braceDepth - 1);
+        }
+      }
     }
 
+    if (braceDepth > 0) {
+      return new ChildAttributes(Indent.getSpaceIndent(braceDepth * 4), null);
+    }
     return new ChildAttributes(Indent.getNoneIndent(), null);
   }
 }

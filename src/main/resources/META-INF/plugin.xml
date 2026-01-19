@@ -133,6 +133,10 @@
         <typedHandler
                 implementation="com.vibrant.prismio.handler.PrismioTypedHandler"/>
 
+        <!-- Enter Handler for Indentation -->
+        <enterHandlerDelegate
+                implementation="com.vibrant.prismio.handler.PrismioEnterHandler"/>
+
         <!-- Structure View -->
         <lang.psiStructureViewFactory
                 language="Prismio"

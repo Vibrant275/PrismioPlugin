@@ -7,7 +7,6 @@ import com.intellij.lexer.FlexLexer;
 
 %%
 
-/* JFlex Settings */
 %public
 %class PsLexer
 %implements FlexLexer
@@ -17,31 +16,21 @@ import com.intellij.lexer.FlexLexer;
 %eof{  return;
 %eof}
 
-// Lexer rules
 CRLF=\R
 WHITE_SPACE=[\ \n\t\f\r]
 SINGLE_LINE_COMMENT=("//")[^\r\n]*
-MULTILINE_COMMENT="/*" [^*] ~"*/" | "/*" "*"+ "/"
+MULTILINE_COMMENT="/*" ([^*]|"*"+[^*/])* "*"+ "/"
 
-// Literals
 STRING_LITERAL=\"([^\"\\]|\\.)*\"
 CHARACTER_LITERAL='([^'\\]|\\.)'
-INTEGER=-?[0-9]+
+INTEGER=-?[0-9]+(_[0-9]+)*
 FLOAT=-?[0-9]*\.[0-9]+([eE][+-]?[0-9]+)?
 BOOLEAN="true"|"false"
 
-// Keywords - exact matches
 KEYWORD="fn"|"let"|"mut"|"if"|"else"|"while"|"for"|"return"|"struct"|"enum"|"trait"|"impl"|"extern"|"import"|"in"|"loop"|"match"|"break"|"continue"
-
-// Type keywords
 TYPE_KEYWORD="Int"|"Bool"|"Char"|"String"|"Float"
 
-// Identifiers
 IDENTIFIER=[a-zA-Z_][a-zA-Z0-9_]*
-
-// Operators and separators
-OPERATOR="<="|">="|"=="|"!="|"+="|"-="|"*="|"/="|"%="|"++"|"--"|"->"|"=>"|"&&"|"||"|[+\-*/%<>=!&|]
-SEPARATOR=[()[\],:;.]]
 
 %%
 
@@ -58,15 +47,32 @@ SEPARATOR=[()[\],:;.]]
   {FLOAT}                   { return PrismioTypes.FLOAT; }
   {INTEGER}                 { return PrismioTypes.INTEGER; }
 
-  {OPERATOR}                { return PrismioTypes.OPERATOR; }
-  {SEPARATOR}               { return PrismioTypes.SEPARATOR; }
+  // Specific operators
+  "->"                      { return PrismioTypes.ARROW; }
+  "=>"                      { return PrismioTypes.FAT_ARROW; }
+  "<="|">="|"=="|"!="       { return PrismioTypes.RELATIONAL_OP; }
+  "+="|"-="|"*="|"/="|"%="  { return PrismioTypes.ASSIGNMENT_OP; }
+  "++"|"--"                 { return PrismioTypes.UNARY_OP; }
+  "&&"|"||"                 { return PrismioTypes.LOGICAL_OP; }
+  [+\-*/%]                  { return PrismioTypes.ARITHMETIC_OP; }
+  [<>=!]                    { return PrismioTypes.COMPARISON; }
+  [&|]                      { return PrismioTypes.BITWISE; }
+
+  // Specific separators
+  "("                       { return PrismioTypes.LPAREN; }
+  ")"                       { return PrismioTypes.RPAREN; }
+  "{"                       { return PrismioTypes.LBRACE; }
+  "}"                       { return PrismioTypes.RBRACE; }
+  "["                       { return PrismioTypes.LBRACKET; }
+  "]"                       { return PrismioTypes.RBRACKET; }
+  ","                       { return PrismioTypes.COMMA; }
+  ":"                       { return PrismioTypes.COLON; }
+  "."                       { return PrismioTypes.DOT; }
+  ";"                       { return PrismioTypes.SEMICOLON; }
 
   {IDENTIFIER}              { return PrismioTypes.IDENTIFIER; }
 
   {WHITE_SPACE}             { return TokenType.WHITE_SPACE; }
-  {CRLF}                    { return TokenType.WHITE_SPACE; }
-      "{" { return PrismioTypes.LBRACE; }
-      "}" { return PrismioTypes.RBRACE; }
 }
 
 [^]                         { return TokenType.BAD_CHARACTER; }

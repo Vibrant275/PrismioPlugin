@@ -1,6 +1,8 @@
 package com.vibrant.prismio.handler;
 
 import com.intellij.codeInsight.editorActions.TypedHandlerDelegate;
+import com.intellij.openapi.command.WriteCommandAction;
+import com.intellij.openapi.editor.Document;
 import com.intellij.openapi.editor.Editor;
 import com.intellij.openapi.editor.EditorModificationUtil;
 import com.intellij.openapi.project.Project;
@@ -8,6 +10,10 @@ import com.intellij.psi.PsiFile;
 import com.vibrant.prismio.psi.PrismioFile;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Typed handler for Prismio.
+ * Handles auto-closing of quotes and auto-spacing before braces.
+ */
 public class PrismioTypedHandler extends TypedHandlerDelegate {
 
   @Override
@@ -17,47 +23,55 @@ public class PrismioTypedHandler extends TypedHandlerDelegate {
     }
 
     int offset = editor.getCaretModel().getOffset();
-    
-    switch (c) {
-      case '(':
-        EditorModificationUtil.insertStringAtCaret(editor, ")", false, 0);
+    Document document = editor.getDocument();
+    CharSequence text = document.getCharsSequence();
+
+    // Auto-insert space before opening brace if not already present
+    // The brace was just typed, so it's at offset - 1
+    if (c == '{' && offset >= 2) {
+      char charBeforeBrace = text.charAt(offset - 2);
+      // If previous char is not a space, (, or newline, insert a space before the
+      // brace
+      if (charBeforeBrace != ' ' && charBeforeBrace != '(' && charBeforeBrace != '\n' && charBeforeBrace != '\t') {
+        WriteCommandAction.runWriteCommandAction(project, () -> {
+          document.insertString(offset - 1, " ");
+        });
+        // Move caret forward by 1 to account for inserted space
+        editor.getCaretModel().moveToOffset(offset + 1);
         return Result.STOP;
-        
-      case '{':
-        EditorModificationUtil.insertStringAtCaret(editor, "}", false, 0);
-        return Result.STOP;
-        
-      case '[':
-        EditorModificationUtil.insertStringAtCaret(editor, "]", false, 0);
-        return Result.STOP;
-        
-      case '"':
-        // Only auto-close if not already after a quote
-        if (offset > 0) {
-          char prevChar = editor.getDocument().getCharsSequence().charAt(offset - 2);
-          if (prevChar != '\\') {
-            EditorModificationUtil.insertStringAtCaret(editor, "\"", false, 0);
+      }
+    }
+
+    // Auto-close quotes if not escaped and not already inside a string
+    if (c == '"' || c == '\'') {
+      // Check if this quote was just typed (it's at offset - 1)
+      if (offset > 0) {
+        // Check if we should auto-close (not escaped)
+        boolean isEscaped = offset >= 2 && text.charAt(offset - 2) == '\\';
+
+        if (!isEscaped) {
+          // Check if next char is already the same quote (user is at end of string)
+          if (offset < text.length() && text.charAt(offset) == c) {
+            // Skip - don't insert another quote
+            return Result.CONTINUE;
+          }
+
+          // Count quotes to determine if we're opening or closing
+          int quoteCount = 0;
+          for (int i = 0; i < offset - 1; i++) {
+            if (text.charAt(i) == c && (i == 0 || text.charAt(i - 1) != '\\')) {
+              quoteCount++;
+            }
+          }
+
+          // If even number of quotes before, we're starting a new string - insert closing
+          // quote
+          if (quoteCount % 2 == 0) {
+            EditorModificationUtil.insertStringAtCaret(editor, String.valueOf(c), false, 0);
             return Result.STOP;
           }
-        } else {
-          EditorModificationUtil.insertStringAtCaret(editor, "\"", false, 0);
-          return Result.STOP;
         }
-        break;
-        
-      case '\'':
-        // Only auto-close if not already after a quote
-        if (offset > 0) {
-          char prevChar = editor.getDocument().getCharsSequence().charAt(offset - 2);
-          if (prevChar != '\\') {
-            EditorModificationUtil.insertStringAtCaret(editor, "'", false, 0);
-            return Result.STOP;
-          }
-        } else {
-          EditorModificationUtil.insertStringAtCaret(editor, "'", false, 0);
-          return Result.STOP;
-        }
-        break;
+      }
     }
 
     return Result.CONTINUE;

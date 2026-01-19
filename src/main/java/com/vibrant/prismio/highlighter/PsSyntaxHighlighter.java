@@ -108,45 +108,57 @@ public class PsSyntaxHighlighter extends SyntaxHighlighterBase {
   public Lexer getHighlightingLexer() {
     return new LexerAdapter();
   }
-
   @Override
   public TextAttributesKey @NotNull [] getTokenHighlights(IElementType tokenType) {
-    if (tokenType.equals(PrismioTypes.KEYWORD)) {
-      return KEYWORD_KEYS;
-    }
-    if (tokenType.equals(PrismioTypes.TYPE_KEYWORD)) {
-      return TYPE_KEYS;
-    }
-    if (tokenType.equals(PrismioTypes.STRING_LITERAL)) {
-      return STRING_KEYS;
-    }
-    if (tokenType.equals(PrismioTypes.CHARACTER_LITERAL)) {
-      return CHAR_KEYS;
-    }
-    if (tokenType.equals(PrismioTypes.INTEGER) || tokenType.equals(PrismioTypes.FLOAT)) {
-      return NUMBER_KEYS;
-    }
-    if (tokenType.equals(PrismioTypes.BOOLEAN)) {
-      return BOOLEAN_KEYS;
-    }
-    if (tokenType.equals(PrismioTypes.OPERATOR)) {
+    // Keywords
+    if (tokenType.equals(PrismioTypes.KEYWORD)) return KEYWORD_KEYS;
+    if (tokenType.equals(PrismioTypes.TYPE_KEYWORD)) return TYPE_KEYS;
+
+    // Literals
+    if (tokenType.equals(PrismioTypes.STRING_LITERAL)) return STRING_KEYS;
+    if (tokenType.equals(PrismioTypes.CHARACTER_LITERAL)) return CHAR_KEYS;
+    if (tokenType.equals(PrismioTypes.INTEGER) || tokenType.equals(PrismioTypes.FLOAT)) return NUMBER_KEYS;
+    if (tokenType.equals(PrismioTypes.BOOLEAN)) return BOOLEAN_KEYS;
+
+    // Operators (specific and generic)
+    if (tokenType.equals(PrismioTypes.ARITHMETIC_OP) ||
+            tokenType.equals(PrismioTypes.RELATIONAL_OP) ||
+            tokenType.equals(PrismioTypes.ASSIGNMENT_OP) ||
+            tokenType.equals(PrismioTypes.UNARY_OP) ||
+            tokenType.equals(PrismioTypes.LOGICAL_OP) ||
+            tokenType.equals(PrismioTypes.COMPARISON) ||
+            tokenType.equals(PrismioTypes.BITWISE) ||
+            tokenType.equals(PrismioTypes.ARROW) ||
+            tokenType.equals(PrismioTypes.FAT_ARROW) ||
+            tokenType.equals(PrismioTypes.OPERATOR)) {
       return OPERATOR_KEYS;
     }
-    if (tokenType.equals(PrismioTypes.SEPARATOR)) {
+
+    // Separators (specific)
+    if (tokenType.equals(PrismioTypes.LPAREN) || tokenType.equals(PrismioTypes.RPAREN) ||
+            tokenType.equals(PrismioTypes.LBRACE) || tokenType.equals(PrismioTypes.RBRACE) ||
+            tokenType.equals(PrismioTypes.LBRACKET) || tokenType.equals(PrismioTypes.RBRACKET)) {
       return SEPARATOR_KEYS;
     }
-    if (tokenType.equals(PrismioTypes.SINGLE_LINE_COMMENT)) {
-      return LINE_COMMENT_KEYS;
+    if (tokenType.equals(PrismioTypes.COMMA)) return COMMA_KEYS;
+    if (tokenType.equals(PrismioTypes.DOT)) return DOT_KEYS;
+    if (tokenType.equals(PrismioTypes.COLON) || tokenType.equals(PrismioTypes.SEMICOLON)) {
+      return SEMICOLON_KEYS;
     }
-    if (tokenType.equals(PrismioTypes.MULTILINE_COMMENT)) {
-      return BLOCK_COMMENT_KEYS;
-    }
-    if (tokenType.equals(PrismioTypes.IDENTIFIER)) {
-      return IDENTIFIER_KEYS;
-    }
-    if (tokenType.equals(TokenType.BAD_CHARACTER)) {
-      return BAD_CHAR_KEYS;
-    }
+
+    // Generic separator (backward compatibility)
+    if (tokenType.equals(PrismioTypes.SEPARATOR)) return SEPARATOR_KEYS;
+
+    // Comments
+    if (tokenType.equals(PrismioTypes.SINGLE_LINE_COMMENT)) return LINE_COMMENT_KEYS;
+    if (tokenType.equals(PrismioTypes.MULTILINE_COMMENT)) return BLOCK_COMMENT_KEYS;
+
+    // Identifiers
+    if (tokenType.equals(PrismioTypes.IDENTIFIER)) return IDENTIFIER_KEYS;
+
+    // Bad characters
+    if (tokenType.equals(TokenType.BAD_CHARACTER)) return BAD_CHAR_KEYS;
+
     return EMPTY_KEYS;
   }
 }
